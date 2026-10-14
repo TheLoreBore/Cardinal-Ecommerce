@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cardinal Market | Account</title>
+
+  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- EXTERNAL CSS #2: Isabella's own stylesheet -->
+  <link rel="stylesheet" href="css/isabella.css">
+
+  <!-- INTERNAL CSS: lives inside <style> in the <head>. Isabella: add yours here. -->
+  <style>
+    .account-layout { display: grid; grid-template-columns: 250px 1fr; gap: 16px; }
+    .profile { text-align: center; }
+    @media (max-width: 700px) { .account-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <h1>Cardinal Market</h1>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <main>
+    <!-- LAYOUT: sidebar on the left (profile), main area on the right (my listings) -->
+    <section class="account-layout">
+      <aside class="card profile">
+        <img src="images/cardinals-logo.jpg" alt="Profile picture" width="120">
+        <h3>Student Name</h3>
+        <p>UIW &middot; Class of 20XX</p>
+      </aside>
+      <div class="card">
+        <h2>My listings</h2>
+        <ul id="myListings">
+          <li>Biology Textbook - $40</li>
+          <li>Desk Lamp - $12</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TODO (Isabella): see Issue - saved items list, JS interaction -->
+  </main>
+
+  <footer>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+  </footer>
+
+  <!-- EXTERNAL JS: shared first, then Isabella's own file -->
+  <script src="js/main.js"></script>
+  <script src="js/isabella.js"></script>
+</body>
+</html>

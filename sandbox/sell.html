@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cardinal Market | Sell</title>
+
+  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- EXTERNAL CSS #2: Sophia's own stylesheet -->
+  <link rel="stylesheet" href="css/sophia.css">
+
+  <!-- INTERNAL CSS: lives inside <style> in the <head>. Sophia: add yours here. -->
+  <style>
+    .sell-form { max-width: 520px; margin: 0 auto; }
+    .sell-form label { display: block; margin-bottom: 12px; }
+    .sell-form input, .sell-form select, .sell-form textarea { display: block; width: 100%; padding: 8px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <h1>Cardinal Market</h1>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <main>
+    <!-- LAYOUT: one centered card containing a form, preview box underneath -->
+    <section class="card sell-form">
+      <h2>Post an item for sale</h2>
+      <form id="sellForm">
+        <label>Title <input type="text" id="title" required></label>
+        <label>Price ($) <input type="number" id="price" min="0" required></label>
+        <label>Category
+          <select id="cat">
+            <option>Textbooks</option>
+            <option>Furniture</option>
+            <option>Clothing</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Description <textarea id="desc" rows="4"></textarea></label>
+        <button type="submit" class="btn">Post listing</button>
+      </form>
+    </section>
+
+    <section class="card" id="preview" style="margin-top:16px">
+      <h3>Preview</h3>
+      <p>Your listing will appear here.</p>
+    </section>
+
+    <!-- TODO (Sophia): see Issue - validate form, show live preview with JS -->
+  </main>
+
+  <footer>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+  </footer>
+
+  <!-- EXTERNAL JS: shared first, then Sophia's own file -->
+  <script src="js/main.js"></script>
+  <script src="js/sophia.js"></script>
+</body>
+</html>

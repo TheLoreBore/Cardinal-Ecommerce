@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cardinal Market | Item</title>
+
+  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- EXTERNAL CSS #2: Maria's own stylesheet -->
+  <link rel="stylesheet" href="css/maria.css">
+
+  <!-- INTERNAL CSS: lives inside <style> in the <head>. Maria: add yours here. -->
+  <style>
+    .item-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .item-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <h1>Cardinal Market</h1>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <main>
+    <!-- LAYOUT: two columns - big image on the left, details on the right -->
+    <section class="item-layout">
+      <div class="card">
+        <img id="mainImg" src="images/textbook.svg" alt="Biology Textbook" style="width:100%">
+      </div>
+      <div class="card details">
+        <h2>Biology Textbook</h2>
+        <p class="price">$40</p>
+        <p>Posted by: <strong>Student Name</strong> &middot; Pick up near the UIW library</p>
+        <p>Used for one semester. No highlighting.</p>
+        <button class="btn" id="contactBtn">Message seller</button>
+        <p id="contactMsg"></p>
+      </div>
+    </section>
+
+    <!-- TODO (Maria): see Issue - thumbnails, save button, JS interaction -->
+  </main>
+
+  <footer>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+  </footer>
+
+  <!-- EXTERNAL JS: shared first, then Maria's own file -->
+  <script src="js/main.js"></script>
+  <script src="js/maria.js"></script>
+</body>
+</html>

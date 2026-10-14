@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cardinal Market | Browse</title>
+
+  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- EXTERNAL CSS #2: Nathan's own stylesheet -->
+  <link rel="stylesheet" href="css/nathan.css">
+
+  <!-- INTERNAL CSS: lives inside <style> in the <head>. Nathan: add yours here. -->
+  <style>
+    .filters { display: flex; gap: 10px; margin-bottom: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .listing img { width: 100%; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <h1>Cardinal Market</h1>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <main>
+    <!-- LAYOUT: filter bar on top, then a CSS-grid of listing cards -->
+    <section class="card filters">
+      <input type="text" id="search" placeholder="Search listings...">
+      <select id="category">
+        <option value="all">All categories</option>
+        <option value="books">Textbooks</option>
+        <option value="furniture">Furniture</option>
+        <option value="clothing">Clothing</option>
+        <option value="other">Other</option>
+      </select>
+    </section>
+
+    <section class="grid" id="grid">
+      <article class="card listing" data-category="books">
+        <img src="images/textbook.svg" alt="Textbook">
+        <h3>Biology Textbook</h3>
+        <p class="price">$40</p>
+        <a href="item.html">View</a>
+      </article>
+      <article class="card listing" data-category="furniture">
+        <img src="images/lamp.svg" alt="Lamp">
+        <h3>Desk Lamp</h3>
+        <p class="price">$12</p>
+        <a href="item.html">View</a>
+      </article>
+      <article class="card listing" data-category="other">
+        <img src="images/bike.svg" alt="Bike">
+        <h3>Campus Bike</h3>
+        <p class="price">$85</p>
+        <a href="item.html">View</a>
+      </article>
+    </section>
+
+    <!-- TODO (Nathan): see Issue - add more cards, make search/filter work -->
+  </main>
+
+  <footer>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Browse</a></li>
+          <li><a href="item.html">Item</a></li>
+          <li><a href="sell.html">Sell</a></li>
+          <li><a href="account.html">Account</a></li>
+        </ul>
+      </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+  </footer>
+
+  <!-- EXTERNAL JS: shared first, then Nathan's own file -->
+  <script src="js/main.js"></script>
+  <script src="js/nathan.js"></script>
+</body>
+</html>
