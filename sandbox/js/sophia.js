@@ -1,6 +1,5 @@
 // sophia.js - EXTERNAL JavaScript owned by Sophia. Add your code here. Comment your code!
 
-
 const sellForm = document.getElementById("sellForm");
 
 // Form fields
@@ -103,6 +102,7 @@ imageInput.addEventListener("change", function () {
     photoMessage.textContent = "Photo selected!";
 });
 
+
 // Cardinal-themed confetti - SOPHIA'S CONFETTI
 const confettiColors = [
     "#b92621",
@@ -112,19 +112,20 @@ const confettiColors = [
     "#000000"
 ];
 
+// Generate a random number
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+// Launch confetti
 function launchConfetti() {
     const area = document.getElementById("confetti-area");
 
+    // Stop if the confetti layer is missing
     if (!area) return;
 
-    // Respect the user's reduced-motion setting
-    if (window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    ).matches) {
+    // Respect reduced-motion preferences
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
     }
 
@@ -168,13 +169,11 @@ function launchConfetti() {
         );
 
         piece.style.setProperty(
-            "--sway",
-            random(-180, 180) + "px"
+            "--sway", random(-180, 180) + "px"
         );
 
         piece.style.setProperty(
-            "--spin",
-            random(-720, 720) + "deg"
+            "--spin", random(-720, 720) + "deg"
         );
 
         piece.style.setProperty(
@@ -189,13 +188,16 @@ function launchConfetti() {
 
         area.appendChild(piece);
 
+        // Remove each piece after its animation finishes
         piece.addEventListener("animationend", function () {
             piece.remove();
         }, { once: true });
     }
 }
 
-// Preview button behavior
+// Celebrate when a valid listing is submitted
+
+if (sellForm) {
 sellForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -212,6 +214,4 @@ sellForm.addEventListener("submit", function (event) {
         block: "start"
     });
 });
-
-// Show the correct placeholder when the page first opens
-updateListingPreview();
+}

@@ -79,7 +79,7 @@ body::before {
   <main>
     <!-- LAYOUT: one centered card containing a form, preview box underneath -->
     <section class="card sell-form">
-      <h2 bold>Post an item for sale</h2>
+      <h2>Post an item for sale</h2>
 
       <p class="form-intro">
         Have something you no longer need? <br>
@@ -126,19 +126,29 @@ body::before {
                  <p id="photoMessage">Your selected photo will appear here.</p>
                  </div>
 
-        <label>Description <textarea id="desc" rows="4"></textarea></label>
-        <button type="submit" class="btn">
-            Preview My Listing
-         </button>
+ <label>Description <textarea id="desc" rows="4"></textarea></label>
+ 
+
+<div class="campus-checkbox">
+    <div class="campus-checkbox-heading">
+        <input type="checkbox" id="campusMeet" required>
+        <label for="campusMeet">📍 I agree to meet on campus</label>
+    </div>
+
+    <p class="campus-checkbox-note">
+        For everyone's safety, please arrange to exchange items on campus.
+    </p>
+</div>
+
+
+        <button type="submit" class="btn">Post listing</button>
          <p id="formMessage" role="status" aria-live="polite"></p>
       </form>
     </section>
 
-    <section class="card listing-preview" id="preview" style="margin-top:16px">
-      <h3>Listing preview</h3>
-      <p class="preview-intro">
-        Your listing will look something like this...
-      </p>
+ <section class="card" id="preview" style="margin-top:16px">
+      <h3>Preview</h3>
+      <p>Your listing will appear here.</p>
        <div class="preview-card">
           <img
             id="previewImage"
@@ -160,9 +170,10 @@ body::before {
           <span id="previewCondition">Not selected</span>
           </p>
 
-          <p id="previewDescription">
+          <p id="previewDescription" >
              Your item description will appear here.
           </p>
+
             </div>
           </div>
 
