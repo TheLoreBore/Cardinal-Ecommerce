@@ -12,9 +12,53 @@
 
   <!-- INTERNAL CSS: lives inside <style> in the <head>. Sophia: add yours here. -->
   <style>
+
+/* UIW logo as a faded background watermark */
+body {
+    position: relative;
+    isolation: isolate;
+    background-color: #f7f4f4;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image: url("https://imgs.search.brave.com/QVzVws38UPAopThDQZbweDiD0GD1dTisjf8yA4GmxN0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjAv/MDcvSW5jYXJuYXRl/LVdvcmQtQ2FyZGlu/YWxzLUVtYmxlbS03/MDB4Mzk0LnBuZw");
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 60%;
+
+    opacity: .2;
+    z-index: -1;
+    pointer-events: none;
+}
+
+
     .sell-form { max-width: 520px; margin: 0 auto; }
     .sell-form label { display: block; margin-bottom: 12px; }
     .sell-form input, .sell-form select, .sell-form textarea { display: block; width: 100%; padding: 8px; margin-top: 4px; }
+
+      /* INTERNAL CSS: controls the sell form layout */
+    .sell-form {
+        width: 90%;
+        max-width: 520px;
+        margin: 30px auto;
+        padding: 24px;
+        box-sizing: border-box;
+    }
+
+    .sell-form h2 {
+        text-align: center;
+    }
+
+    @media (max-width: 600px) {
+        .sell-form {
+            width: 100%;
+            padding: 16px;
+        }
+    }
   </style>
 </head>
 <body>
@@ -35,7 +79,13 @@
   <main>
     <!-- LAYOUT: one centered card containing a form, preview box underneath -->
     <section class="card sell-form">
-      <h2>Post an item for sale</h2>
+      <h2 bold>Post an item for sale</h2>
+
+      <p class="form-intro">
+        Have something you no longer need? <br>
+        Give it a new home with another student!
+      </p>
+
       <form id="sellForm">
         <label>Title <input type="text" id="title" required></label>
         <label>Price ($) <input type="number" id="price" min="0" required></label>
@@ -44,17 +94,81 @@
             <option>Textbooks</option>
             <option>Furniture</option>
             <option>Clothing</option>
-            <option>Other</option>
+            <option>Electronics</option>
+            <option>Other</option> 
           </select>
         </label>
+
+          <label for="condition">Item Condition *</label>
+              <select id="condition" required>
+                  <option value="">Choose the condition</option>
+                  <option value="New">New</option>
+                  <option value="Like New">Like New</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+              </select>
+
+        <label for="image">Item Photo</label>
+              <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+              >
+              <p class="help-text">
+                  Choose a photo of your item from your computer.
+              </p>
+                <div class="photo-preview-box">
+                   <img
+                      id="imagePreview"
+                      alt="Preview of your selected item"
+                      hidden
+                  >
+                 <p id="photoMessage">Your selected photo will appear here.</p>
+                 </div>
+
         <label>Description <textarea id="desc" rows="4"></textarea></label>
-        <button type="submit" class="btn">Post listing</button>
+        <button type="submit" class="btn">
+            Preview My Listing
+         </button>
+         <p id="formMessage" role="status" aria-live="polite"></p>
       </form>
     </section>
 
-    <section class="card" id="preview" style="margin-top:16px">
-      <h3>Preview</h3>
-      <p>Your listing will appear here.</p>
+    <section class="card listing-preview" id="preview" style="margin-top:16px">
+      <h3>Listing preview</h3>
+      <p class="preview-intro">
+        Your listing will look something like this...
+      </p>
+       <div class="preview-card">
+          <img
+            id="previewImage"
+            alt="Item listing photo"
+            hidden
+           >
+
+          <div class="preview-details">
+          <span id="previewCategory" class="category-label">
+              Category
+          </span>
+
+          <h3 id="previewTitle">Your item title</h3>
+
+          <p id="previewPrice" class="preview-price">$0.00</p>
+
+          <p>
+          <strong>Condition:</strong>
+          <span id="previewCondition">Not selected</span>
+          </p>
+
+          <p id="previewDescription">
+             Your item description will appear here.
+          </p>
+            </div>
+          </div>
+
+            <p class="preview-note">
+                This is a local preview, not a published listing.
+            </p>
     </section>
 
     <!-- TODO (Sophia): see Issue - validate form, show live preview with JS -->
@@ -72,6 +186,9 @@
       </nav>
     <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
   </footer>
+
+    <!-- Confetti animation layer -->
+    <div id="confetti-area"></div>
 
   <!-- EXTERNAL JS: shared first, then Sophia's own file -->
   <script src="js/main.js"></script>
