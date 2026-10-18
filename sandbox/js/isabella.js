@@ -1,3 +1,4 @@
+// Updated by Isa for the pull request
 // isabella.js - EXTERNAL JavaScript owned by Isabella (used by index.html AND account.html).
 // MODIFIED FROM CLASS: the greeting (window.onload + getElementById + style) is modified from the
 // class example script.js (JS/script.js, "Cardinal Student Marketplace"), and showMarketplaceInfo()
