@@ -10,10 +10,12 @@
   <!-- EXTERNAL CSS #2: Isabella's own stylesheet -->
   <link rel="stylesheet" href="css/isabella.css">
 
-  <!-- INTERNAL CSS: lives inside <style> in the <head>. Isabella: add yours here. -->
+  <!-- INTERNAL CSS: lives inside <style> in the <head>. Only affects THIS page. -->
   <style>
+    /* Two columns: 250px sidebar (profile) + the rest of the width (listings) */
     .account-layout { display: grid; grid-template-columns: 250px 1fr; gap: 16px; }
     .profile { text-align: center; }
+    /* On phones (700px or narrower) stack the columns on top of each other */
     @media (max-width: 700px) { .account-layout { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -33,23 +35,51 @@
   </header>
 
   <main>
-    <!-- LAYOUT: sidebar on the left (profile), main area on the right (my listings) -->
+    <!-- LAYOUT: sidebar on the left (profile), main area on the right (listings + saved) -->
     <section class="account-layout">
       <aside class="card profile">
         <img src="images/cardinals-logo.jpg" alt="Profile picture" width="120">
-        <h3>Student Name</h3>
+        <!-- The name is changed by JavaScript when the button below is clicked -->
+        <h3 id="profileName">Student Name</h3>
         <p>UIW &middot; Class of 20XX</p>
+        <button class="btn" id="editNameBtn">Edit name</button>
       </aside>
-      <div class="card">
-        <h2>My listings</h2>
-        <ul id="myListings">
-          <li>Biology Textbook - $40</li>
-          <li>Desk Lamp - $12</li>
-        </ul>
+
+      <div>
+        <div class="card">
+          <h2>My listings</h2>
+          <ul id="myListings" class="item-list">
+            <li><span>Biology Textbook - $40</span> <button class="btn btn-small remove-btn">Remove</button></li>
+            <li><span>Desk Lamp - $12</span> <button class="btn btn-small remove-btn">Remove</button></li>
+          </ul>
+          <!-- NEW LISTING: type a name + price, click the button, JS adds a row to the list above -->
+          <div class="add-listing">
+            <input type="text" id="newListing" placeholder="New item, e.g. Calculator - $15">
+            <button class="btn" id="addListingBtn">Add listing</button>
+          </div>
+          <!-- Shows "You have no listings" after everything is removed -->
+          <p id="listingsEmpty" class="empty-msg" hidden>You have no listings yet. <a href="sell.html">Sell something!</a></p>
+          <p>Total listings: <strong id="listingCount">2</strong></p>
+        </div>
+
+        <!-- INLINE CSS: style="..." below only affects this one card -->
+        <div class="card" style="margin-top: 16px;">
+          <h2>Saved items</h2>
+          <ul id="savedItems" class="item-list">
+            <li><span>Campus Bike - $85</span> <button class="btn btn-small save-btn">Unsave</button></li>
+            <li><span>Mini Fridge - $60</span> <button class="btn btn-small save-btn">Unsave</button></li>
+          </ul>
+        </div>
+
+        <!-- INLINE CSS again: style="..." only affects this card -->
+        <div class="card" style="margin-top: 16px; border-left: 5px solid #c8102e;">
+          <h2>Messages</h2>
+          <div class="message"><strong>Maria:</strong> Hi! Is the Biology Textbook still available?</div>
+          <div class="message"><strong>Nathan:</strong> Can we meet at the library at 3pm for the lamp?</div>
+          <div class="message"><strong>Sophia:</strong> Thanks for the fast reply, see you tomorrow!</div>
+        </div>
       </div>
     </section>
-
-    <!-- TODO (Isabella): see Issue - saved items list, JS interaction -->
   </main>
 
   <footer>

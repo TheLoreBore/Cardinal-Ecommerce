@@ -7,13 +7,19 @@
 
   <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
   <link rel="stylesheet" href="css/main.css">
-  <!-- EXTERNAL CSS #2: Isabella's own stylesheet -->
+  <!-- EXTERNAL CSS #2: Isabella's own stylesheet (hover effects, featured cards, etc.) -->
   <link rel="stylesheet" href="css/isabella.css">
 
-  <!-- INTERNAL CSS: lives inside <style> in the <head>. Isabella: add yours here. -->
+  <!-- INTERNAL CSS: lives inside <style> in the <head>. Only affects THIS page. -->
   <style>
+    /* Hero banner: centered text with a little breathing room */
     .hero { text-align: center; padding: 40px 20px; }
+
+    /* Categories: CSS grid that fits as many 160px+ tiles per row as possible */
     .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; text-align: center; }
+
+    /* Featured items: another responsive grid (same idea as categories) */
+    .featured { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
   </style>
 </head>
 <body>
@@ -32,22 +38,32 @@
   </header>
 
   <main>
-    <!-- LAYOUT: hero banner on top, then a row of category tiles -->
+    <!-- LAYOUT: hero banner on top, then category tiles, then featured items -->
     <section class="hero card">
+      <!-- JS fills this in with a time-of-day greeting (see js/isabella.js) -->
+      <p id="welcome-msg">Welcome to Cardinal Market!</p>
       <h2>Buy &amp; sell at UIW</h2>
       <p>Textbooks, dorm gear, bikes and more - from fellow Cardinals.</p>
       <a class="btn" href="listings.html">Start browsing</a>
+      <!-- This button calls a JavaScript function when clicked (onclick) -->
+      <button class="btn btn-outline" onclick="showMarketplaceInfo()">How it works</button>
     </section>
 
     <h3>Categories</h3>
     <section class="categories">
-      <div class="card">Textbooks</div>
-      <div class="card">Furniture</div>
-      <div class="card">Clothing</div>
-      <div class="card">Electronics</div>
+      <!-- Each tile is a link to the Browse page. The "card" class comes from main.css,
+           "category-tile" comes from isabella.css (adds the hover effect). -->
+      <a class="card category-tile" href="listings.html">Textbooks</a>
+      <a class="card category-tile" href="listings.html">Furniture</a>
+      <a class="card category-tile" href="listings.html">Clothing</a>
+      <a class="card category-tile" href="listings.html">Electronics</a>
     </section>
 
-    <!-- TODO (Isabella): see Issue - add featured items, inline style, JS greeting, etc. -->
+    <!-- INLINE CSS: the style="..." attribute below only affects this one heading -->
+    <h3 style="margin-top: 28px; color: #c8102e; border-bottom: 2px solid #c8102e; padding-bottom: 4px;">Featured items</h3>
+
+    <!-- This section starts empty: JavaScript builds one card per item from an array -->
+    <section class="featured" id="featuredItems"></section>
   </main>
 
   <footer>
