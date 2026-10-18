@@ -1,1 +1,94 @@
-/* isabella.css - EXTERNAL CSS owned by Isabella. Add your styles here. Comment your code! */
+/* isabella.css - EXTERNAL CSS owned by Isabella (used by index.html and account.html).
+   Colors come from the CSS variables defined in main.css (var(--cardinal), etc.). */
+
+/* ---------- HOME PAGE ---------- */
+
+/* HERO BANNER (assignment: background gradient + big text).
+   linear-gradient blends cardinal red into a darker red at a 135-degree angle. */
+.hero {
+  background: linear-gradient(135deg, var(--cardinal), #6b0a1a);
+  color: var(--white);
+}
+.hero h2 { font-size: 2.6rem; margin: 8px 0; }   /* big headline */
+.hero p  { font-size: 1.1rem; }
+
+/* The greeting line in the hero banner (JS also changes its color/weight) */
+#welcome-msg {
+  font-size: 1.2rem;
+  margin: 0 0 8px;
+}
+
+/* Buttons inside the hero: white so they stand out on the red background */
+.hero .btn { background: var(--white); color: var(--cardinal); font-weight: bold; }
+.hero .btn:hover { background: #ffe4e8; }
+
+/* A second button style: white with a red outline.
+   Used together with .btn (from main.css): <button class="btn btn-outline"> */
+/* (inside the hero it is see-through with a white outline) */
+.btn-outline {
+  background: transparent;
+  color: var(--cardinal);
+  border: 2px solid var(--cardinal);
+  margin-left: 8px;
+}
+.btn-outline:hover { background: var(--cardinal); color: var(--white); }
+.hero .btn-outline { background: transparent; color: var(--white); border-color: var(--white); }
+.hero .btn-outline:hover { background: var(--white); color: var(--cardinal); }
+
+/* Category tiles: turn the plain boxes into clickable tiles */
+.category-tile {
+  display: block;
+  color: var(--dark);
+  text-decoration: none;
+  font-weight: bold;
+  /* "transition" animates the hover change smoothly */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+/* :hover = while the mouse is over the tile -> lift it up and add a shadow */
+.category-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  color: var(--cardinal);
+}
+
+/* Featured item cards (these are created by JavaScript) */
+.featured-card img { width: 100%; border-radius: 8px; }
+.featured-card h3 { margin: 8px 0 4px; }
+.featured-card .price { margin: 0 0 8px; }
+
+/* ---------- ACCOUNT PAGE ---------- */
+
+/* Lists of listings / saved items: remove bullets, one row per item */
+.item-list { list-style: none; margin: 0 0 12px; padding: 0; }
+.item-list li {
+  display: flex;
+  justify-content: space-between;  /* text on the left, button on the right */
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Smaller button for the Remove / Unsave actions */
+.btn-small { padding: 5px 12px; font-size: 0.85rem; }
+
+/* Row with the text box + button for adding a new listing */
+.add-listing { display: flex; gap: 8px; margin: 8px 0 12px; }
+.add-listing input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+
+/* Messages section: each message is a light-grey bubble */
+.message { background: var(--light); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+.message strong { color: var(--cardinal); }
+
+/* Friendly message shown when a list is empty */
+.empty-msg { color: #666; font-style: italic; }
+
+/* Class added by JavaScript to fade out a row just before it is removed */
+.fading { opacity: 0; transition: opacity 0.3s; }
+
+/* ---------- BOTH PAGES ---------- */
+
+/* main.css makes nav links white, which is invisible in the light-grey footer.
+   This rule makes the footer links cardinal red on my two pages. */
+footer nav ul { justify-content: center; }
+footer nav a { color: var(--cardinal); }
+footer nav a:hover, footer nav a.active { background: rgba(200, 16, 46, .12); }
