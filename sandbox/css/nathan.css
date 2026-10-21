@@ -1,1 +1,357 @@
-/* nathan.css - EXTERNAL CSS owned by Nathan. Add your styles here. Comment your code! */
+/* ==========================================================================
+   nathan.css - EXTERNAL STYLESHEET FOR BROWSE / LISTINGS PAGE
+   Author: Nathan Ortiz
+   Course: CIS 2368 Website Development I - Midterm Project
+   Site: Cardinal Market (UIW Campus Student Marketplace)
+   --------------------------------------------------------------------------
+   MODIFIED FROM CLASS:
+   - Builds on Prof. Idar's lessons on CSS Selectors, Box Model, and layout (hw5 & hw6).
+   - Enhances class concepts by using CSS Grid (repeat(auto-fill, minmax()))
+     and Flexbox for responsive, mobile-first design.
+   - Utilizes CSS custom variables (:root from main.css), hover transformations,
+     and micro-interactions for a polished e-commerce experience.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. FILTER & SEARCH TOOLBAR
+   -------------------------------------------------------------------------- */
+.browse-toolbar {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-top: 4px solid var(--cardinal); /* UIW Cardinal brand accent */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Primary search row */
+.search-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 12px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  background-color: #fafafa;
+}
+
+.search-input-wrapper input:focus {
+  border-color: var(--cardinal);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+}
+
+/* Secondary filter row for category and sorting */
+.filters-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 0.88rem;
+  font-weight: bold;
+  color: #475569;
+}
+
+.filter-group select {
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: var(--dark);
+  font-size: 0.92rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.filter-group select:focus {
+  border-color: var(--cardinal);
+}
+
+/* Clear / Reset button */
+.btn-reset-filters {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.btn-reset-filters:hover {
+  background: #e2e8f0;
+  color: var(--dark);
+}
+
+/* Results counter bar */
+.results-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px;
+  font-size: 0.92rem;
+  color: #64748b;
+}
+
+.results-count-text {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+/* --------------------------------------------------------------------------
+   2. PRODUCT GRID & CARD STYLES
+   -------------------------------------------------------------------------- */
+.browse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+/* Individual listing card */
+.listing-card {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.listing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+/* Card media container */
+.card-media {
+  width: 100%;
+  height: 190px;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 16px;
+  transition: transform 0.3s ease;
+}
+
+.listing-card:hover .card-media img {
+  transform: scale(1.06);
+}
+
+/* Category pill badge */
+.badge-category {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(28, 28, 28, 0.8);
+  color: #ffffff;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+/* Favorite heart button */
+.btn-fav-card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e2e8f0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.btn-fav-card:hover {
+  color: #e11d48;
+  transform: scale(1.15);
+}
+
+.btn-fav-card.active {
+  color: #e11d48;
+  background: #ffe4e6;
+  border-color: #fda4af;
+}
+
+/* Card content body */
+.card-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title {
+  margin: 0 0 6px 0;
+  font-size: 1.05rem;
+  color: var(--dark);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.card-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.condition-tag {
+  background: #f1f5f9;
+  color: #334155;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.card-snippet {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin: 0 0 14px 0;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* Card bottom footer */
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.item-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--cardinal);
+}
+
+.btn-card-action {
+  background: var(--cardinal);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 7px 15px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-card-action:hover {
+  background: #9d0d24;
+}
+
+/* --------------------------------------------------------------------------
+   3. EMPTY STATE
+   -------------------------------------------------------------------------- */
+.no-results-box {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--white);
+  border-radius: 12px;
+  border: 2px dashed #cbd5e1;
+}
+
+.no-results-box h3 {
+  margin-top: 0;
+  color: #334155;
+  font-size: 1.3rem;
+}
+
+.no-results-box p {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   4. TOAST NOTIFICATION
+   -------------------------------------------------------------------------- */
+.toast-notice {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e293b;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(120px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 9999;
+}
+
+.toast-notice.show {
+  transform: translateY(0);
+  opacity: 1;
+}

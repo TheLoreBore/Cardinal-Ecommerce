@@ -1,89 +1,172 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ====================================================================
+       PAGE: listings.html (Browse Listings)
+       AUTHOR / OWNER: Nathan Ortiz
+       COURSE: CIS 2368 Website Development I - Midterm Project
+       PROJECT: Cardinal Market (UIW Campus Student Marketplace)
+       --------------------------------------------------------------------
+       MODIFIED FROM CLASS:
+       - Semantic HTML5 structure (header, nav, main, section, article, footer)
+         building on class lessons from hw1.html.
+       - Form controls (input, select, button) modified from hw4.html and
+         inputOutput.html for interactive client-side filtering.
+       - Connects shared external CSS (main.css), student external CSS (nathan.css),
+         and page-specific internal CSS.
+       ==================================================================== -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cardinal Market | Browse</title>
+  <meta name="description" content="Browse verified student listings at UIW - textbooks, dorm essentials, electronics, and apparel.">
+  <title>Cardinal Market | Browse Campus Listings</title>
 
-  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <!-- EXTERNAL CSS #1: Shared team stylesheet for brand colors & core elements -->
   <link rel="stylesheet" href="css/main.css">
-  <!-- EXTERNAL CSS #2: Nathan's own stylesheet -->
+  <!-- EXTERNAL CSS #2: Nathan's own stylesheet for grid layout & filter controls -->
   <link rel="stylesheet" href="css/nathan.css">
 
-  <!-- INTERNAL CSS: lives inside <style> in the <head>. Nathan: add yours here. -->
+  <!-- INTERNAL CSS: Specific to listings.html presentation -->
   <style>
-    .filters { display: flex; gap: 10px; margin-bottom: 16px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-    .listing img { width: 100%; border-radius: 8px; }
+    /* Hero section styling for the browse banner */
+    .browse-header-banner {
+      background: linear-gradient(135deg, #c8102e 0%, #800000 100%);
+      color: #ffffff;
+      padding: 24px 28px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .browse-header-banner h2 {
+      margin: 0 0 6px 0;
+      font-size: 1.5rem;
+    }
+    .browse-header-banner p {
+      margin: 0;
+      opacity: 0.92;
+      font-size: 0.95rem;
+    }
+    .btn-sell-shortcut {
+      background: #ffffff;
+      color: #c8102e;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-sell-shortcut:hover {
+      background: #f8fafc;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
+
+  <!-- ==================== HEADER & SHARED NAVIGATION ==================== -->
   <header>
-    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <!-- Logo with alternate text for accessibility -->
+    <img src="images/uiwLogo.gif" alt="University of the Incarnate Word logo">
     <h1>Cardinal Market</h1>
-    <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listings.html">Browse</a></li>
-          <li><a href="item.html">Item</a></li>
-          <li><a href="sell.html">Sell</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
-      </nav>
+    <!-- Main site navigation bar -->
+    <nav aria-label="Main Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Browse</a></li>
+        <li><a href="item.html">Item</a></li>
+        <li><a href="sell.html">Sell</a></li>
+        <li><a href="account.html">Account</a></li>
+      </ul>
+    </nav>
   </header>
 
+  <!-- ==================== MAIN PAGE CONTENT ==================== -->
   <main>
-    <!-- LAYOUT: filter bar on top, then a CSS-grid of listing cards -->
-    <section class="card filters">
-      <input type="text" id="search" placeholder="Search listings...">
-      <select id="category">
-        <option value="all">All categories</option>
-        <option value="books">Textbooks</option>
-        <option value="furniture">Furniture</option>
-        <option value="clothing">Clothing</option>
-        <option value="other">Other</option>
-      </select>
+    <!-- Page Header Banner -->
+    <section class="browse-header-banner">
+      <div>
+        <h2>Campus Marketplace Listings</h2>
+        <p>Buy safely from fellow UIW students with on-campus handoffs.</p>
+      </div>
+      <a class="btn-sell-shortcut" href="sell.html">+ Post an Item for Sale</a>
     </section>
 
-    <section class="grid" id="grid">
-      <article class="card listing" data-category="books">
-        <img src="images/textbook.svg" alt="Textbook">
-        <h3>Biology Textbook</h3>
-        <p class="price">$40</p>
-        <a href="item.html">View</a>
-      </article>
-      <article class="card listing" data-category="furniture">
-        <img src="images/lamp.svg" alt="Lamp">
-        <h3>Desk Lamp</h3>
-        <p class="price">$12</p>
-        <a href="item.html">View</a>
-      </article>
-      <article class="card listing" data-category="other">
-        <img src="images/bike.svg" alt="Bike">
-        <h3>Campus Bike</h3>
-        <p class="price">$85</p>
-        <a href="item.html">View</a>
-      </article>
+    <!-- Interactive Filter Toolbar (Nathan's component) -->
+    <section class="browse-toolbar" aria-label="Search and Filter Options">
+      <!-- Search input row -->
+      <div class="search-row">
+        <div class="search-input-wrapper">
+          <input
+            type="text"
+            id="search"
+            placeholder="Search by title, description, or seller (e.g. Biology, Lamp, Bike)..."
+            aria-label="Search listings">
+        </div>
+      </div>
+
+      <!-- Secondary filter controls (category, sort, reset) -->
+      <div class="filters-row">
+        <!-- Category Dropdown Filter -->
+        <div class="filter-group">
+          <label for="category">Category:</label>
+          <select id="category" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+            <option value="books">Textbooks</option>
+            <option value="furniture">Dorm &amp; Furniture</option>
+            <option value="clothing">Apparel &amp; Gear</option>
+            <option value="other">Bikes &amp; Other</option>
+          </select>
+        </div>
+
+        <!-- Sorting Dropdown -->
+        <div class="filter-group">
+          <label for="sortBy">Sort By:</label>
+          <select id="sortBy" aria-label="Sort listings">
+            <option value="featured">Featured First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="title-az">Name: A to Z</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <button type="button" id="resetFilters" class="btn-reset-filters">Reset Filters</button>
+      </div>
     </section>
 
-    <!-- TODO (Nathan): see Issue - add more cards, make search/filter work -->
+    <!-- Results Summary Count -->
+    <div class="results-summary">
+      <span>Showing <strong id="resultsCount">9</strong> campus items</span>
+      <span>💡 Click the heart on any card to save it to your Account!</span>
+    </div>
+
+    <!-- Responsive Product Grid Container (Populated dynamically by nathan.js) -->
+    <section class="browse-grid" id="grid" aria-live="polite">
+      <!-- Cards are generated dynamically by nathan.js using JavaScript DOM methods -->
+    </section>
   </main>
 
+  <!-- ==================== FOOTER ==================== -->
   <footer>
-    <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listings.html">Browse</a></li>
-          <li><a href="item.html">Item</a></li>
-          <li><a href="sell.html">Sell</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
-      </nav>
-    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+    <nav aria-label="Footer Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Browse</a></li>
+        <li><a href="item.html">Item</a></li>
+        <li><a href="sell.html">Sell</a></li>
+        <li><a href="account.html">Account</a></li>
+      </ul>
+    </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW Student Marketplace (CIS 2368 Midterm Project)</p>
   </footer>
 
-  <!-- EXTERNAL JS: shared first, then Nathan's own file -->
+  <!-- ==================== JAVASCRIPT FILES ==================== -->
+  <!-- Shared JS (handles active navigation link & footer copyright year) -->
   <script src="js/main.js"></script>
+  <!-- Nathan's external JS (catalog array, filtering logic, favorite persistence) -->
   <script src="js/nathan.js"></script>
 </body>
 </html>

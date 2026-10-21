@@ -1,69 +1,204 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ====================================================================
+       PAGE: item.html (Item Detail & Messaging)
+       AUTHOR / OWNER: Maria Frausto
+       COURSE: CIS 2368 Website Development I - Midterm Project
+       PROJECT: Cardinal Market (UIW Campus Student Marketplace)
+       --------------------------------------------------------------------
+       MODIFIED FROM CLASS:
+       - HTML5 Semantic structure (header, nav, main, section, article, aside, footer)
+         building upon hw1.html, hw2.html (images), and hw4.html (forms).
+       - Integrates shared stylesheet (main.css), Maria's stylesheet (maria.css),
+         and responsive two-column grid.
+       - Interactive photo gallery thumbnail switcher, live seller messaging modal,
+         and discount offer calculator powered by JavaScript.
+       ==================================================================== -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cardinal Market | Item</title>
+  <meta name="description" content="Detailed view of UIW student marketplace item with verified seller information, campus meetup location, and messaging.">
+  <title>Cardinal Market | Item Detail</title>
 
-  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <!-- EXTERNAL CSS #1: Shared team stylesheet for brand colors & buttons -->
   <link rel="stylesheet" href="css/main.css">
-  <!-- EXTERNAL CSS #2: Maria's own stylesheet -->
+  <!-- EXTERNAL CSS #2: Maria's own stylesheet for gallery & modal styling -->
   <link rel="stylesheet" href="css/maria.css">
 
-  <!-- INTERNAL CSS: lives inside <style> in the <head>. Maria: add yours here. -->
+  <!-- INTERNAL CSS: Specific layout refinements for the detail page -->
   <style>
-    .item-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
-    @media (max-width: 700px) { .item-layout { grid-template-columns: 1fr; } }
+    /* Status indicator dot for verified student sellers */
+    .status-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      background-color: #16a34a; /* Green online dot */
+      border-radius: 50%;
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- ==================== HEADER & NAVIGATION ==================== -->
   <header>
-    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <img src="images/uiwLogo.gif" alt="University of the Incarnate Word logo">
     <h1>Cardinal Market</h1>
-    <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listings.html">Browse</a></li>
-          <li><a href="item.html">Item</a></li>
-          <li><a href="sell.html">Sell</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
-      </nav>
+    <!-- Navigation bar highlighting current page -->
+    <nav aria-label="Main Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Browse</a></li>
+        <li><a href="item.html">Item</a></li>
+        <li><a href="sell.html">Sell</a></li>
+        <li><a href="account.html">Account</a></li>
+      </ul>
+    </nav>
   </header>
 
+  <!-- ==================== MAIN CONTENT ==================== -->
   <main>
-    <!-- LAYOUT: two columns - big image on the left, details on the right -->
-    <section class="item-layout">
-      <div class="card">
-        <img id="mainImg" src="images/textbook.svg" alt="Biology Textbook" style="width:100%">
+    <!-- Breadcrumbs Navigation -->
+    <nav class="item-breadcrumbs" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span>&gt;</span>
+      <a href="listings.html">Browse</a>
+      <span>&gt;</span>
+      <span id="breadcrumbCategory">Category</span>
+      <span>&gt;</span>
+      <span id="breadcrumbTitle" style="color:#1c1c1c; font-weight:600;">Item Title</span>
+    </nav>
+
+    <!-- Two-Column Product Layout (Maria's Grid Component) -->
+    <section class="item-detail-layout">
+
+      <!-- LEFT COLUMN: Image Gallery & Safety Notice -->
+      <div>
+        <div class="gallery-card">
+          <!-- Main Large Photo View -->
+          <div class="main-image-frame">
+            <img id="mainImg" src="images/textbook.svg" alt="Item preview image">
+          </div>
+          <!-- Clickable Thumbnail Selector Row -->
+          <div class="thumbnails-row" id="thumbnailsRow" aria-label="Image thumbnails">
+            <!-- Populated dynamically by maria.js -->
+          </div>
+        </div>
+
+        <!-- Campus Safety Card -->
+        <div class="safety-box" style="margin-top: 18px;">
+          <h4><span class="status-dot"></span> UIW Safe Exchange Zone Recommended</h4>
+          <p>
+            For safety, all Cardinal Market trades should occur in well-lit public campus areas,
+            such as the <strong>J.E. and L.E. Mabee Library</strong> lobby or the
+            <strong>Student Engagement Center (SEC)</strong>. Never exchange items off-campus alone.
+          </p>
+        </div>
       </div>
-      <div class="card details">
-        <h2>Biology Textbook</h2>
-        <p class="price">$40</p>
-        <p>Posted by: <strong>Student Name</strong> &middot; Pick up near the UIW library</p>
-        <p>Used for one semester. No highlighting.</p>
-        <button class="btn" id="contactBtn">Message seller</button>
-        <p id="contactMsg"></p>
-      </div>
+
+      <!-- RIGHT COLUMN: Item Information, Seller Profile & Actions -->
+      <article class="details-card">
+        <!-- Tags line -->
+        <div class="item-header-meta">
+          <span class="category-tag" id="categoryTag">Textbooks</span>
+          <span class="condition-badge" id="conditionBadge">Like New</span>
+        </div>
+
+        <!-- Item Title -->
+        <h2 class="item-main-title" id="itemTitle">Item Title Loading...</h2>
+
+        <!-- Pricing Row -->
+        <div class="price-container">
+          <span class="detail-price" id="itemPrice">$0.00</span>
+          <span class="original-price-note" id="originalPrice">$0.00 retail</span>
+        </div>
+
+        <!-- Item Description -->
+        <p class="item-full-description" id="itemDesc">
+          Loading detailed item description...
+        </p>
+
+        <!-- Quick "Make an Offer" Calculator -->
+        <div class="offer-box">
+          <span>💰 Quick Offer Suggestions:</span>
+          <div class="offer-chips">
+            <button type="button" class="offer-btn" data-discount="0.10">Offer 10% Off</button>
+            <button type="button" class="offer-btn" data-discount="0.20">Offer 20% Off</button>
+          </div>
+          <p id="offerResult" style="margin: 8px 0 0 0; font-size: 0.82rem; color: #64748b;"></p>
+        </div>
+
+        <!-- Verified Seller Card -->
+        <div class="seller-profile-card">
+          <div class="seller-avatar">UIW</div>
+          <div class="seller-meta">
+            <h4 id="sellerName">Student Seller</h4>
+            <p id="sellerRole">Class of 2026</p>
+            <p id="sellerRating">5.0 ★ • Verified Student</p>
+            <p style="margin-top: 4px; color:#475569;">📍 Pickup: <strong id="meetupLocation">Campus Library</strong></p>
+          </div>
+        </div>
+
+        <!-- Call to Action Buttons -->
+        <div class="action-buttons-row">
+          <!-- Button that opens interactive messaging modal -->
+          <button type="button" class="btn-message-seller" id="openMessageModalBtn">
+            ✉ Message Seller
+          </button>
+          <!-- Save item to favorites button -->
+          <button type="button" class="btn-save-item" id="saveItemBtn">
+            <span>♡</span> Save Item
+          </button>
+        </div>
+      </article>
     </section>
 
-    <!-- TODO (Maria): see Issue - thumbnails, save button, JS interaction -->
+    <!-- Recommendations: Similar Campus Items -->
+    <section class="recommendations-section">
+      <h3>Other Items You Might Like</h3>
+      <div class="recommendations-grid" id="similarItemsGrid">
+        <!-- Rendered dynamically by maria.js -->
+      </div>
+    </section>
   </main>
 
+  <!-- ==================== MODAL DIALOG: MESSAGE SELLER ==================== -->
+  <div class="modal-overlay" id="messageModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="modalTitle">Message <span id="modalRecipient">Seller</span></h3>
+        <button type="button" class="btn-close-modal" id="closeModalBtn" aria-label="Close message window">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label for="sellerMessageInput" style="font-weight:600; font-size:0.9rem;">Your message:</label>
+        <textarea
+          id="sellerMessageInput"
+          placeholder="Ask a question about availability, condition, or suggest a campus meetup time..."
+          maxlength="300"></textarea>
+        <div class="char-counter" id="charCount">0 / 300 characters</div>
+        <div class="modal-footer">
+          <button type="button" class="btn-modal-cancel" id="cancelModalBtn">Cancel</button>
+          <button type="button" class="btn-modal-send" id="sendMessageBtn">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
   <footer>
-    <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listings.html">Browse</a></li>
-          <li><a href="item.html">Item</a></li>
-          <li><a href="sell.html">Sell</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
-      </nav>
-    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+    <nav aria-label="Footer Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Browse</a></li>
+        <li><a href="item.html">Item</a></li>
+        <li><a href="sell.html">Sell</a></li>
+        <li><a href="account.html">Account</a></li>
+      </ul>
+    </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW Student Marketplace (CIS 2368 Midterm Project)</p>
   </footer>
 
-  <!-- EXTERNAL JS: shared first, then Maria's own file -->
+  <!-- ==================== JAVASCRIPT FILES ==================== -->
   <script src="js/main.js"></script>
   <script src="js/maria.js"></script>
 </body>

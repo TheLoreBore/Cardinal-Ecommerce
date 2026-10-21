@@ -1,101 +1,161 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ====================================================================
+       PAGE: account.html (Student Account Dashboard)
+       AUTHOR / OWNER: Isabella Gomez
+       COURSE: CIS 2368 Website Development I - Midterm Project
+       PROJECT: Cardinal Market (UIW Campus Student Marketplace)
+       --------------------------------------------------------------------
+       MODIFIED FROM CLASS:
+       - HTML5 Semantic Structure (header, nav, main, section, aside, footer)
+         building on hw1.html, hw2.html (images), and hw4.html (form inputs).
+       - Two-column CSS Grid layout with responsive media query breakpoint
+         (modified from hw5.html and hw6.html).
+       - Interactive DOM list manipulation (createElement, remove, prompt)
+         and event delegation (modified from hw7.html).
+       - Synchronized localStorage integration with Browse, Sell, and Item pages.
+       ==================================================================== -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cardinal Market | Account</title>
+  <meta name="description" content="Manage your UIW Cardinal Market profile, active listings, saved items, and campus messages.">
+  <title>Cardinal Market | Student Account Dashboard</title>
 
-  <!-- EXTERNAL CSS #1: shared by the whole team (do not edit) -->
+  <!-- EXTERNAL CSS #1: Shared team stylesheet for brand colors & buttons -->
   <link rel="stylesheet" href="css/main.css">
-  <!-- EXTERNAL CSS #2: Isabella's own stylesheet -->
+  <!-- EXTERNAL CSS #2: Isabella's own stylesheet for account lists & profile -->
   <link rel="stylesheet" href="css/isabella.css">
 
-  <!-- INTERNAL CSS: lives inside <style> in the <head>. Only affects THIS page. -->
+  <!-- INTERNAL CSS: Specific to account.html two-column layout -->
   <style>
-    /* Two columns: 250px sidebar (profile) + the rest of the width (listings) */
-    .account-layout { display: grid; grid-template-columns: 250px 1fr; gap: 16px; }
-    .profile { text-align: center; }
-    /* On phones (700px or narrower) stack the columns on top of each other */
-    @media (max-width: 700px) { .account-layout { grid-template-columns: 1fr; } }
+    /* Two columns: 260px profile sidebar + flexible main dashboard area */
+    .account-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+    }
+    .profile {
+      text-align: center;
+      padding: 24px 18px;
+    }
+    .profile img {
+      border-radius: 50%;
+      border: 3px solid var(--cardinal);
+      margin-bottom: 12px;
+    }
+    /* Mobile breakpoint: stack sidebar and content on smaller screens */
+    @media (max-width: 768px) {
+      .account-layout {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ==================== HEADER & NAVIGATION ==================== -->
   <header>
-    <img src="images/uiwLogo.gif" alt="UIW logo">
+    <img src="images/uiwLogo.gif" alt="University of the Incarnate Word logo">
     <h1>Cardinal Market</h1>
-    <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listings.html">Browse</a></li>
-          <li><a href="item.html">Item</a></li>
-          <li><a href="sell.html">Sell</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
-      </nav>
+    <!-- Navigation bar highlighting current page -->
+    <nav aria-label="Main Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Browse</a></li>
+        <li><a href="item.html">Item</a></li>
+        <li><a href="sell.html">Sell</a></li>
+        <li><a href="account.html">Account</a></li>
+      </ul>
+    </nav>
   </header>
 
+  <!-- ==================== MAIN CONTENT ==================== -->
   <main>
-    <!-- LAYOUT: sidebar on the left (profile), main area on the right (listings + saved) -->
+    <!-- Two-Column Account Dashboard Layout -->
     <section class="account-layout">
+
+      <!-- LEFT SIDEBAR: Student Profile Card -->
       <aside class="card profile">
-        <img src="images/cardinals-logo.jpg" alt="Profile picture" width="120">
-        <!-- The name is changed by JavaScript when the button below is clicked -->
+        <img src="images/cardinals-logo.jpg" alt="Profile avatar" width="120" height="120">
+        <!-- Student name can be dynamically edited via editNameBtn -->
         <h3 id="profileName">Student Name</h3>
-        <p>UIW &middot; Class of 20XX</p>
-        <button class="btn" id="editNameBtn">Edit name</button>
+        <p style="color:#64748b; font-size:0.9rem; margin-top:4px;">UIW &middot; Class of 2026</p>
+        <p style="font-size:0.82rem; color:#16a34a; font-weight:600;">✓ Verified UIW Student</p>
+        <button type="button" class="btn" id="editNameBtn" style="margin-top:10px; width:100%;">Edit Name</button>
+        <div style="margin-top: 18px; text-align: left; font-size: 0.85rem; color:#475569; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+          <p><strong>Campus Meetup:</strong> Mabee Library</p>
+          <p><strong>Member Rating:</strong> 5.0 ★★★★★</p>
+        </div>
       </aside>
 
+      <!-- RIGHT DASHBOARD: Listings, Saved Items, and Messages -->
       <div>
+        <!-- Card 1: Active Listings Management -->
         <div class="card">
-          <h2>My listings</h2>
-          <ul id="myListings" class="item-list">
-            <li><span>Biology Textbook - $40</span> <button class="btn btn-small remove-btn">Remove</button></li>
-            <li><span>Desk Lamp - $12</span> <button class="btn btn-small remove-btn">Remove</button></li>
-          </ul>
-          <!-- NEW LISTING: type a name + price, click the button, JS adds a row to the list above -->
-          <div class="add-listing">
-            <input type="text" id="newListing" placeholder="New item, e.g. Calculator - $15">
-            <button class="btn" id="addListingBtn">Add listing</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h2 style="margin:0;">My Listings</h2>
+            <a href="sell.html" class="btn btn-small" style="text-decoration:none;">+ New Listing</a>
           </div>
-          <!-- Shows "You have no listings" after everything is removed -->
-          <p id="listingsEmpty" class="empty-msg" hidden>You have no listings yet. <a href="sell.html">Sell something!</a></p>
-          <p>Total listings: <strong id="listingCount">2</strong></p>
+
+          <!-- Dynamic list of student's current listings -->
+          <ul id="myListings" class="item-list">
+            <li><span>Biology: Concepts & Connections - $40</span> <button type="button" class="btn btn-small remove-btn">Remove</button></li>
+            <li><span>Adjustable LED Study Desk Lamp - $12</span> <button type="button" class="btn btn-small remove-btn">Remove</button></li>
+          </ul>
+
+          <!-- Quick inline addition box (Demonstrates createElement + appendChild) -->
+          <div class="add-listing">
+            <input type="text" id="newListing" placeholder="Quick add item, e.g. TI-84 Plus Calculator - $35" aria-label="Add new item">
+            <button type="button" class="btn" id="addListingBtn">Add</button>
+          </div>
+
+          <!-- Dynamic state messages -->
+          <p id="listingsEmpty" class="empty-msg" hidden>You have no active listings. <a href="sell.html">Post an item now!</a></p>
+          <p style="font-size:0.88rem; color:#64748b; margin-top:10px;">Total active listings: <strong id="listingCount">2</strong></p>
         </div>
 
-        <!-- INLINE CSS: style="..." below only affects this one card -->
-        <div class="card" style="margin-top: 16px;">
-          <h2>Saved items</h2>
+        <!-- Card 2: Saved Favorites (Synchronized with Browse & Item pages) -->
+        <div class="card" style="margin-top: 20px;">
+          <h2>Saved Items</h2>
+          <p style="font-size:0.85rem; color:#64748b; margin-top:-6px; margin-bottom:12px;">
+            Items you favorited while browsing the marketplace.
+          </p>
           <ul id="savedItems" class="item-list">
-            <li><span>Campus Bike - $85</span> <button class="btn btn-small save-btn">Unsave</button></li>
-            <li><span>Mini Fridge - $60</span> <button class="btn btn-small save-btn">Unsave</button></li>
+            <!-- Populated dynamically from localStorage by isabella.js -->
           </ul>
         </div>
 
-        <!-- INLINE CSS again: style="..." only affects this card -->
-        <div class="card" style="margin-top: 16px; border-left: 5px solid #c8102e;">
-          <h2>Messages</h2>
-          <div class="message"><strong>Maria:</strong> Hi! Is the Biology Textbook still available?</div>
-          <div class="message"><strong>Nathan:</strong> Can we meet at the library at 3pm for the lamp?</div>
-          <div class="message"><strong>Sophia:</strong> Thanks for the fast reply, see you tomorrow!</div>
+        <!-- Card 3: Simulated Campus Messages Thread -->
+        <div class="card" style="margin-top: 20px; border-left: 5px solid var(--cardinal);">
+          <h2>Campus Messages</h2>
+          <p style="font-size:0.85rem; color:#64748b; margin-top:-6px; margin-bottom:14px;">
+            Inquiries and meetup scheduling with fellow Cardinals.
+          </p>
+          <div id="messagesList">
+            <div class="message"><strong>Maria Frausto:</strong> Hi! Is the Biology Textbook still available? Can we meet at Mabee Library?</div>
+            <div class="message"><strong>Nathan Ortiz:</strong> Hey, can we meet near the Student Engagement Center at 3pm for the desk lamp?</div>
+            <div class="message"><strong>Sophia Gomez:</strong> Thanks for the quick reply, see you near the Natatorium tomorrow morning!</div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- ==================== FOOTER ==================== -->
   <footer>
-    <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listings.html">Browse</a></li>
-          <li><a href="item.html">Item</a></li>
-          <li><a href="sell.html">Sell</a></li>
-          <li><a href="account.html">Account</a></li>
-        </ul>
-      </nav>
-    <p>&copy; <span id="year"></span> Cardinal Market - UIW student marketplace (class project)</p>
+    <nav aria-label="Footer Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Browse</a></li>
+        <li><a href="item.html">Item</a></li>
+        <li><a href="sell.html">Sell</a></li>
+        <li><a href="account.html">Account</a></li>
+      </ul>
+    </nav>
+    <p>&copy; <span id="year"></span> Cardinal Market - UIW Student Marketplace (CIS 2368 Midterm Project)</p>
   </footer>
 
-  <!-- EXTERNAL JS: shared first, then Isabella's own file -->
+  <!-- ==================== JAVASCRIPT FILES ==================== -->
   <script src="js/main.js"></script>
   <script src="js/isabella.js"></script>
 </body>
