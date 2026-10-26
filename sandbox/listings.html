@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- ====================================================================
@@ -20,51 +20,62 @@
   <meta name="description" content="Browse verified student listings at UIW - textbooks, dorm essentials, electronics, and apparel.">
   <title>Cardinal Market | Browse Campus Listings</title>
 
+  <!-- Comic + typewriter fonts for the wizard theme (falls back to Comic Sans / Courier offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
   <!-- EXTERNAL CSS #1: Shared team stylesheet for brand colors & core elements -->
   <link rel="stylesheet" href="css/main.css">
   <!-- EXTERNAL CSS #2: Nathan's own stylesheet for grid layout & filter controls -->
   <link rel="stylesheet" href="css/nathan.css">
 
-  <!-- INTERNAL CSS: Specific to listings.html presentation -->
+  <!-- INTERNAL CSS: Specific to listings.html presentation (title banner + twinkling stars) -->
   <style>
-    /* Hero section styling for the browse banner */
+    /* Title banner above the grid: a comic "caption box" */
     .browse-header-banner {
-      background: linear-gradient(135deg, #c8102e 0%, #800000 100%);
-      color: #ffffff;
-      padding: 24px 28px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
+      padding: 20px 28px;
+      margin-bottom: 28px;
+      overflow: hidden;
     }
     .browse-header-banner h2 {
       margin: 0 0 6px 0;
-      font-size: 1.5rem;
+      font-family: var(--comic-font);
+      font-weight: 400;
+      font-size: 2.4rem;
+      letter-spacing: 2px;
+      line-height: 1;
     }
     .browse-header-banner p {
       margin: 0;
-      opacity: 0.92;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
     }
-    .btn-sell-shortcut {
-      background: #ffffff;
-      color: #c8102e;
-      padding: 10px 18px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.2s ease, transform 0.2s ease;
+    /* Decorative stars that twinkle (modified from the class hover/transition examples) */
+    .sparkle {
+      position: absolute;
+      color: var(--red);
+      text-shadow: 2px 2px 0 var(--ink);
+      animation: twinkle 2.4s ease-in-out infinite;
     }
-    .btn-sell-shortcut:hover {
-      background: #f8fafc;
-      transform: translateY(-2px);
+    .sparkle.s1 { top: 8px;  right: 210px; font-size: 1.6rem; }
+    .sparkle.s2 { bottom: 6px; right: 120px; font-size: 1.1rem; animation-delay: 0.8s; }
+    .sparkle.s3 { top: 14px; left: 52%; font-size: 1rem; animation-delay: 1.5s; }
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50%      { transform: scale(1.35) rotate(20deg); opacity: 0.6; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sparkle { animation: none; }
     }
   </style>
 </head>
-<body>
+<body class="wizard-page">
 
   <!-- ==================== HEADER & SHARED NAVIGATION ==================== -->
   <header>
@@ -84,69 +95,100 @@
   </header>
 
   <!-- ==================== MAIN PAGE CONTENT ==================== -->
-  <main>
-    <!-- Page Header Banner -->
-    <section class="browse-header-banner">
-      <div>
-        <h2>Campus Marketplace Listings</h2>
-        <p>Buy safely from fellow UIW students with on-campus handoffs.</p>
-      </div>
-      <a class="btn-sell-shortcut" href="sell.html">+ Post an Item for Sale</a>
-    </section>
+  <main class="wizard-layout">
 
-    <!-- Interactive Filter Toolbar (Nathan's component) -->
-    <section class="browse-toolbar" aria-label="Search and Filter Options">
-      <!-- Search input row -->
-      <div class="search-row">
-        <div class="search-input-wrapper">
+    <!-- ===== SIDEBAR: the wizard + all search / filter controls ===== -->
+    <aside class="wizard-sidebar" aria-label="Search and Filter Options">
+
+      <!-- Character panel: a simple inline SVG wizard hat (drawn with <path> / <circle>) -->
+      <div class="wizard-panel">
+        <svg viewBox="0 0 120 110" role="img" aria-label="Cartoon wizard hat with a star">
+          <path d="M60 6 L88 78 L32 78 Z" fill="#c8102e" stroke="#1a1a1a" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M14 82 Q60 66 106 82 Q60 98 14 82 Z" fill="#fffdf5" stroke="#1a1a1a" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M60 30 L64 41 L76 42 L67 50 L70 62 L60 55 L50 62 L53 50 L44 42 L56 41 Z" fill="#fffdf5" stroke="#1a1a1a" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="98" cy="26" r="4" fill="#fffdf5" stroke="#1a1a1a" stroke-width="2"/>
+          <circle cx="20" cy="40" r="3" fill="#fffdf5" stroke="#1a1a1a" stroke-width="2"/>
+        </svg>
+        <h2>The Spell Shop</h2>
+        <p class="tagline">UIW student treasures, conjured fresh!</p>
+      </div>
+
+      <!-- Speech bubble: nathan.js rewrites this text as you search / filter -->
+      <p class="speech-bubble" id="wizardSays" aria-live="polite">
+        Welcome, traveler! Cast a search below to find your next treasure.
+      </p>
+
+      <!-- Interactive Filter Toolbar (Nathan's component) -->
+      <section class="browse-toolbar">
+        <!-- Search input -->
+        <div class="search-row">
+          <label for="search">Cast a search</label>
           <input
             type="text"
             id="search"
-            placeholder="Search by title, description, or seller (e.g. Biology, Lamp, Bike)..."
+            placeholder="Biology, lamp, bike..."
             aria-label="Search listings">
         </div>
-      </div>
 
-      <!-- Secondary filter controls (category, sort, reset) -->
-      <div class="filters-row">
-        <!-- Category Dropdown Filter -->
-        <div class="filter-group">
-          <label for="category">Category:</label>
-          <select id="category" aria-label="Filter by category">
-            <option value="all">All Categories</option>
-            <option value="books">Textbooks</option>
-            <option value="furniture">Dorm &amp; Furniture</option>
-            <option value="clothing">Apparel &amp; Gear</option>
-            <option value="other">Bikes &amp; Other</option>
-          </select>
+        <!-- Secondary filter controls (category, sort, reset) -->
+        <div class="filters-row">
+          <!-- Category Dropdown Filter -->
+          <div class="filter-group">
+            <label for="category">School of magic</label>
+            <select id="category" aria-label="Filter by category">
+              <option value="all">All Schools</option>
+              <option value="books">Tomes (Textbooks)</option>
+              <option value="furniture">Dorm &amp; Furniture</option>
+              <option value="clothing">Robes &amp; Gear (Apparel)</option>
+              <option value="other">Bikes &amp; Other</option>
+            </select>
+          </div>
+
+          <!-- Sorting Dropdown -->
+          <div class="filter-group">
+            <label for="sortBy">Sort the scrolls</label>
+            <select id="sortBy" aria-label="Sort listings">
+              <option value="featured">Featured First</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="title-az">Name: A to Z</option>
+            </select>
+          </div>
+
+          <!-- Reset Button -->
+          <button type="button" id="resetFilters" class="btn-reset-filters">Reset Spell!</button>
         </div>
+      </section>
 
-        <!-- Sorting Dropdown -->
-        <div class="filter-group">
-          <label for="sortBy">Sort By:</label>
-          <select id="sortBy" aria-label="Sort listings">
-            <option value="featured">Featured First</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="title-az">Name: A to Z</option>
-          </select>
-        </div>
-
-        <!-- Reset Button -->
-        <button type="button" id="resetFilters" class="btn-reset-filters">Reset Filters</button>
+      <!-- Results Summary Count (the inline style="" below is this page's INLINE CSS example) -->
+      <div class="results-summary">
+        <span>Showing <strong id="resultsCount" style="color: #ffe3e7;">9</strong> campus items</span>
+        <span>&#10024; Click the heart on any card to save it to your Account!</span>
+        <!-- Music on/off button (wired up by initMusic() in nathan.js) -->
+        <button type="button" id="musicToggle" class="btn-music" aria-pressed="true">&#9834; Music: ON</button>
       </div>
-    </section>
+    </aside>
 
-    <!-- Results Summary Count -->
-    <div class="results-summary">
-      <span>Showing <strong id="resultsCount">9</strong> campus items</span>
-      <span>💡 Click the heart on any card to save it to your Account!</span>
+    <!-- ===== CONTENT COLUMN: title banner + item grid ===== -->
+    <div class="wizard-content">
+
+      <!-- Page Header Banner -->
+      <section class="browse-header-banner">
+        <span class="sparkle s1" aria-hidden="true">&#9733;</span>
+        <span class="sparkle s2" aria-hidden="true">&#9733;</span>
+        <span class="sparkle s3" aria-hidden="true">&#9733;</span>
+        <div>
+          <h2>Campus Marketplace Listings</h2>
+          <p>Buy safely from fellow UIW students with on-campus handoffs.</p>
+        </div>
+        <a class="btn-sell-shortcut" href="sell.html">+ Post an Item for Sale</a>
+      </section>
+
+      <!-- Responsive Product Grid Container (Populated dynamically by nathan.js) -->
+      <section class="browse-grid" id="grid" aria-live="polite">
+        <!-- Cards are generated dynamically by nathan.js using JavaScript DOM methods -->
+      </section>
     </div>
-
-    <!-- Responsive Product Grid Container (Populated dynamically by nathan.js) -->
-    <section class="browse-grid" id="grid" aria-live="polite">
-      <!-- Cards are generated dynamically by nathan.js using JavaScript DOM methods -->
-    </section>
   </main>
 
   <!-- ==================== FOOTER ==================== -->
