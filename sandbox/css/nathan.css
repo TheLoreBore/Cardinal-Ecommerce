@@ -4,354 +4,580 @@
    Course: CIS 2368 Website Development I - Midterm Project
    Site: Cardinal Market (UIW Campus Student Marketplace)
    --------------------------------------------------------------------------
+   THEME: "The Spell Shop" - a comic-book wizard marketplace.
+   Cardinal-red page, white "comic panels" with thick ink borders and hard
+   offset shadows, a sidebar for the filters, and a numbered grid of items.
+
    MODIFIED FROM CLASS:
    - Builds on Prof. Idar's lessons on CSS Selectors, Box Model, and layout (hw5 & hw6).
-   - Enhances class concepts by using CSS Grid (repeat(auto-fill, minmax()))
-     and Flexbox for responsive, mobile-first design.
-   - Utilizes CSS custom variables (:root from main.css), hover transformations,
-     and micro-interactions for a polished e-commerce experience.
+   - CSS Grid (repeat(auto-fill, minmax())) for the item grid and a two-column
+     page layout; Flexbox for the toolbar rows (modified from the class layout examples).
+   - CSS custom properties (the :root idea from main.css) are re-declared on
+     body.wizard-page so this theme only affects THIS page.
+   - :hover transitions and @keyframes animation (modified from class hover examples).
+
+   NOTE: main.css loads first, so every rule below is scoped with
+   "body.wizard-page" to override the shared red header/footer on this page only.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. FILTER & SEARCH TOOLBAR
+   1. THEME VARIABLES + PAGE BACKGROUND
    -------------------------------------------------------------------------- */
-.browse-toolbar {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-top: 4px solid var(--cardinal); /* UIW Cardinal brand accent */
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+body.wizard-page {
+  --red: #c8102e;        /* UIW Cardinal red (same value as --cardinal in main.css) */
+  --red-deep: #8c0b20;   /* deeper red for the header / footer bars */
+  --ink: #1a1a1a;        /* near-black outlines + text (UIW black) */
+  --paper: #fffdf5;      /* warm white panels (UIW white) */
+  --blush: #ffe3e7;      /* soft pink highlight for tags */
+  --comic-font: "Bangers", "Comic Sans MS", cursive;
+  --mono-font: "Space Mono", "Courier New", monospace;
+
+  background-color: var(--red);
+  /* Halftone-dot comic texture painted with a radial gradient */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.6px);
+  background-size: 18px 18px;
+  color: var(--ink);
+  font-family: var(--mono-font);
 }
 
-/* Primary search row */
-.search-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.search-input-wrapper {
-  flex: 1;
-  min-width: 260px;
-  position: relative;
-}
-
-.search-input-wrapper input {
-  width: 100%;
-  padding: 12px 18px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  background-color: #fafafa;
-}
-
-.search-input-wrapper input:focus {
-  border-color: var(--cardinal);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
-}
-
-/* Secondary filter row for category and sorting */
-.filters-row {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
-  padding-top: 10px;
-  border-top: 1px solid #f1f5f9;
-}
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.filter-group label {
-  font-size: 0.88rem;
-  font-weight: bold;
-  color: #475569;
-}
-
-.filter-group select {
-  padding: 8px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  background-color: #ffffff;
-  color: var(--dark);
-  font-size: 0.92rem;
-  font-family: inherit;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.filter-group select:focus {
-  border-color: var(--cardinal);
-}
-
-/* Clear / Reset button */
-.btn-reset-filters {
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #cbd5e1;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 0.88rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  margin-left: auto;
-}
-
-.btn-reset-filters:hover {
-  background: #e2e8f0;
-  color: var(--dark);
-}
-
-/* Results counter bar */
-.results-summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding: 0 4px;
-  font-size: 0.92rem;
-  color: #64748b;
-}
-
-.results-count-text {
-  font-weight: 600;
-  color: var(--dark);
+body.wizard-page main {
+  max-width: 1240px;
 }
 
 /* --------------------------------------------------------------------------
-   2. PRODUCT GRID & CARD STYLES
+   2. HEADER: nav becomes a "quest track" with a circle for each page
+   -------------------------------------------------------------------------- */
+body.wizard-page header {
+  background: var(--red-deep);
+  border-bottom: 4px solid var(--ink);
+  box-shadow: none;
+  justify-content: space-between;
+}
+
+body.wizard-page header h1 {
+  font-family: var(--comic-font);
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 var(--ink);
+}
+
+body.wizard-page header nav ul {
+  gap: 28px;
+  align-items: center;
+  padding-top: 6px;
+}
+
+body.wizard-page header nav a {
+  position: relative;
+  display: block;
+  padding: 14px 4px 2px;
+  border-radius: 0;
+  font-family: var(--mono-font);
+  font-size: 0.85rem;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+  background: transparent;
+}
+
+/* The little circle node above each nav word */
+body.wizard-page header nav a::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--red-deep);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+body.wizard-page header nav a:hover::before {
+  transform: scale(1.3);
+}
+
+/* main.js adds .active to the current page's link: fill its circle white */
+body.wizard-page header nav a.active {
+  background: transparent;
+  color: var(--paper);
+  font-weight: 700;
+}
+body.wizard-page header nav a.active::before {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+
+/* --------------------------------------------------------------------------
+   3. TWO-COLUMN LAYOUT: sticky filter sidebar + content column
+   -------------------------------------------------------------------------- */
+.wizard-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.wizard-sidebar {
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Shared "comic panel" look: thick ink border + hard offset shadow */
+.wizard-panel,
+.browse-toolbar,
+.speech-bubble,
+.browse-header-banner {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+/* Sidebar character panel (wizard-hat drawing + name) */
+.wizard-panel {
+  padding: 16px 18px;
+  text-align: center;
+}
+.wizard-panel svg {
+  width: 120px;
+  height: auto;
+}
+.wizard-panel h2 {
+  margin: 4px 0 2px;
+  font-family: var(--comic-font);
+  font-weight: 400;
+  font-size: 2.1rem;
+  letter-spacing: 1.5px;
+  line-height: 1;
+}
+.wizard-panel .tagline {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+/* Speech bubble that the wizard "talks" in (text is changed by nathan.js) */
+.speech-bubble {
+  position: relative;
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  min-height: 62px;
+}
+/* Bubble tail pointing up at the wizard */
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 40px;
+  border-style: solid;
+  border-width: 0 9px 12px 9px; /* CSS triangle: only the bottom edge is colored */
+  border-color: transparent transparent var(--ink) transparent;
+}
+
+/* --------------------------------------------------------------------------
+   4. FILTER & SEARCH TOOLBAR (inside the sidebar)
+   -------------------------------------------------------------------------- */
+.browse-toolbar {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.browse-toolbar label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.browse-toolbar input,
+.browse-toolbar select {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--mono-font);
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.browse-toolbar input:focus,
+.browse-toolbar select:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 var(--red);
+  transform: translate(-2px, -2px);
+}
+
+.filters-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Comic "push" buttons shared by reset / sell / card actions */
+.btn-reset-filters,
+.btn-card-action,
+.btn-sell-shortcut {
+  display: inline-block;
+  padding: 10px 16px;
+  font-family: var(--comic-font);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--paper);
+  background: var(--red);
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-reset-filters:hover,
+.btn-card-action:hover,
+.btn-sell-shortcut:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.btn-reset-filters:active,
+.btn-card-action:active,
+.btn-sell-shortcut:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* Music on/off button: paper-colored so it stands out on the red page */
+.btn-music {
+  align-self: flex-start;
+  padding: 8px 14px;
+  font-family: var(--mono-font);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-music:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.btn-music[aria-pressed="false"] {
+  background: var(--blush);
+  text-decoration: line-through;
+}
+
+/* Results counter + tip, written in paper-colored text on the red page */
+.results-summary {
+  color: var(--paper);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.results-summary strong {
+  font-family: var(--comic-font);
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. LISTING GRID + NUMBERED COMIC-PANEL CARDS
    -------------------------------------------------------------------------- */
 .browse-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 26px;
+  counter-reset: panel; /* CSS counter: numbers the cards 01, 02, 03... */
 }
 
-/* Individual listing card */
 .listing-card {
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e2e8f0;
+  position: relative;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  position: relative;
+  overflow: visible;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--ink);
+  counter-increment: panel;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Every other card is tilted a little, like panels stuck onto a page */
+.listing-card:nth-child(odd)  { transform: rotate(-0.8deg); }
+.listing-card:nth-child(even) { transform: rotate(0.8deg); }
+
+/* Hover: straighten up and pop off the page */
 .listing-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  border-color: #cbd5e1;
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow: 10px 12px 0 var(--ink);
+  z-index: 2;
 }
 
-/* Card media container */
-.card-media {
-  width: 100%;
-  height: 190px;
-  background-color: #f8fafc;
+/* Panel number badge, e.g. "01" (content comes from the CSS counter) */
+.listing-card::before {
+  content: counter(panel, decimal-leading-zero);
+  position: absolute;
+  top: -14px;
+  left: -12px;
+  z-index: 3;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid #f1f5f9;
+  font-family: var(--comic-font);
+  font-size: 1.1rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 50%;
 }
 
+.card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-bottom: 3px solid var(--ink);
+  border-radius: 11px 11px 0 0;
+  background-color: var(--blush);
+  background-image: radial-gradient(rgba(200, 16, 46, 0.22) 1.4px, transparent 1.5px);
+  background-size: 10px 10px;
+}
 .card-media img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 16px;
+  object-fit: cover;
+  display: block;
   transition: transform 0.3s ease;
 }
-
 .listing-card:hover .card-media img {
-  transform: scale(1.06);
+  transform: scale(1.06) rotate(-1deg);
 }
 
-/* Category pill badge */
+/* Category sticker in the top-left corner of the picture */
 .badge-category {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: rgba(28, 28, 28, 0.8);
-  color: #ffffff;
-  font-size: 0.72rem;
+  z-index: 2;
+  padding: 3px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-  backdrop-filter: blur(4px);
+  letter-spacing: 1px;
+  color: var(--paper);
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
 }
 
-/* Favorite heart button */
+/* Heart / save button */
 .btn-fav-card {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e2e8f0;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #94a3b8;
-  font-size: 1.1rem;
-  transition: all 0.2s ease;
-  padding: 0;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  font-size: 1.3rem;
   line-height: 1;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
-
 .btn-fav-card:hover {
-  color: #e11d48;
-  transform: scale(1.15);
+  transform: scale(1.15) rotate(8deg);
 }
-
 .btn-fav-card.active {
-  color: #e11d48;
-  background: #ffe4e6;
-  border-color: #fda4af;
+  color: var(--paper);
+  background: var(--red);
 }
 
-/* Card content body */
 .card-info {
-  padding: 16px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  gap: 8px;
+  padding: 14px 16px 16px;
 }
 
 .card-title {
-  margin: 0 0 6px 0;
-  font-size: 1.05rem;
-  color: var(--dark);
-  font-weight: 700;
-  line-height: 1.3;
+  margin: 0;
+  font-family: var(--comic-font);
+  font-weight: 400;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+  line-height: 1.15;
 }
 
 .card-meta-line {
   display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   align-items: center;
-  gap: 8px;
-  font-size: 0.78rem;
-  color: #64748b;
-  margin-bottom: 8px;
+  font-size: 0.72rem;
 }
-
 .condition-tag {
-  background: #f1f5f9;
-  color: #334155;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-weight: 600;
+  padding: 1px 8px;
+  font-weight: 700;
+  background: var(--blush);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
 }
 
 .card-snippet {
-  font-size: 0.85rem;
-  color: #4b5563;
-  margin: 0 0 14px 0;
-  line-height: 1.4;
   flex: 1;
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
 }
 
-/* Card bottom footer */
 .card-bottom {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid #f1f5f9;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
 }
 
+/* Price sits in a red comic "burst" using clip-path */
 .item-price {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--cardinal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 66px;
+  height: 52px;
+  padding: 0 14px;
+  font-family: var(--comic-font);
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  color: var(--paper);
+  background: var(--red);
+  clip-path: polygon(0 12%, 12% 0, 26% 10%, 42% 0, 58% 10%, 74% 0, 88% 10%, 100% 14%,
+                     94% 40%, 100% 64%, 90% 86%, 74% 100%, 58% 90%, 42% 100%, 26% 90%,
+                     10% 100%, 0 80%, 6% 50%);
 }
 
 .btn-card-action {
-  background: var(--cardinal);
-  color: #ffffff;
-  text-decoration: none;
-  padding: 7px 15px;
-  border-radius: 6px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  transition: background-color 0.2s ease;
-}
-
-.btn-card-action:hover {
-  background: #9d0d24;
+  padding: 6px 12px;
+  font-size: 1rem;
+  box-shadow: 3px 3px 0 var(--ink);
 }
 
 /* --------------------------------------------------------------------------
-   3. EMPTY STATE
+   6. "NO ITEMS FOUND" PANEL (built by renderListings() in nathan.js)
    -------------------------------------------------------------------------- */
 .no-results-box {
   grid-column: 1 / -1;
+  padding: 36px 24px;
   text-align: center;
-  padding: 60px 20px;
-  background: var(--white);
-  border-radius: 12px;
-  border: 2px dashed #cbd5e1;
+  background: var(--paper);
+  border: 3px dashed var(--ink);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--ink);
 }
-
 .no-results-box h3 {
-  margin-top: 0;
-  color: #334155;
-  font-size: 1.3rem;
+  margin: 0 0 8px;
+  font-family: var(--comic-font);
+  font-weight: 400;
+  font-size: 2.2rem;
+  letter-spacing: 1.5px;
 }
-
 .no-results-box p {
-  color: #64748b;
-  margin-bottom: 20px;
+  margin: 0 0 16px;
+  font-size: 0.85rem;
 }
 
 /* --------------------------------------------------------------------------
-   4. TOAST NOTIFICATION
+   7. SAVED-ITEM TOAST
    -------------------------------------------------------------------------- */
 .toast-notice {
   position: fixed;
+  right: 20px;
   bottom: 24px;
-  right: 24px;
-  background: #1e293b;
-  color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transform: translateY(120px);
+  z-index: 50;
+  max-width: 300px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 5px 5px 0 var(--ink);
   opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  z-index: 9999;
+  transform: translateY(20px) rotate(2deg);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast-notice.show {
+  opacity: 1;
+  transform: translateY(0) rotate(-1deg);
 }
 
-.toast-notice.show {
-  transform: translateY(0);
-  opacity: 1;
+/* --------------------------------------------------------------------------
+   8. FOOTER
+   -------------------------------------------------------------------------- */
+body.wizard-page footer {
+  margin-top: 40px;
+  color: var(--paper);
+  background: var(--red-deep);
+  border-top: 4px solid var(--ink);
+}
+body.wizard-page footer nav a {
+  color: var(--paper);
+}
+body.wizard-page footer nav a:hover,
+body.wizard-page footer nav a.active {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE: stack the sidebar above the grid on tablets / phones
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .wizard-layout {
+    grid-template-columns: 1fr;
+  }
+  .wizard-sidebar {
+    position: static;
+  }
+  body.wizard-page header nav ul {
+    gap: 14px;
+  }
+}
+
+/* Respect users who turn animations off in their OS settings */
+@media (prefers-reduced-motion: reduce) {
+  .listing-card,
+  .listing-card:hover,
+  .card-media img,
+  .btn-reset-filters,
+  .btn-card-action,
+  .btn-sell-shortcut {
+    transition: none;
+  }
+  .listing-card:nth-child(odd),
+  .listing-card:nth-child(even) {
+    transform: none;
+  }
 }
