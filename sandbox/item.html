@@ -7,44 +7,77 @@
        COURSE: CIS 2368 Website Development I - Midterm Project
        PROJECT: Cardinal Market (UIW Campus Student Marketplace)
        --------------------------------------------------------------------
-       MODIFIED FROM CLASS:
-       - HTML5 Semantic structure (header, nav, main, section, article, aside, footer)
-         building upon hw1.html, hw2.html (images), and hw4.html (forms).
-       - Integrates shared stylesheet (main.css), Maria's stylesheet (maria.css),
-         and responsive two-column grid.
-       - Interactive photo gallery thumbnail switcher, live seller messaging modal,
-         and discount offer calculator powered by JavaScript.
+       CLASS CODE MODIFICATIONS:
+       1. Semantic HTML5 (modified from hw1.html, hw2.html, hw4.html):
+          Uses <header>, <nav>, <main>, <section>, <article>, <figure>,
+          <figcaption>, and <dl>/<dt>/<dd> for accessible item presentation.
+       2. Multi-tier CSS Hierarchy (modified from class main.css & hw5/hw6):
+          External shared (main.css) + External personal (maria.css) +
+          Internal (<style>) + Inline (style="...").
+       3. JavaScript Interactivity (modified from sayHello.js & DragAndDrop.js):
+          Thumbnail image swapping, Save/Saved toggle, offer calculations,
+          and contact seller message feedback in #contactMsg.
        ==================================================================== -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Detailed view of UIW student marketplace item with verified seller information, campus meetup location, and messaging.">
   <title>Cardinal Market | Item Detail</title>
 
-  <!-- EXTERNAL CSS #1: Shared team stylesheet for brand colors & buttons -->
+  <!-- EXTERNAL CSS #1: Shared team stylesheet for brand colors, header, footer & buttons -->
   <link rel="stylesheet" href="css/main.css">
-  <!-- EXTERNAL CSS #2: Maria's own stylesheet for gallery & modal styling -->
+
+  <!-- EXTERNAL CSS #2: Maria's own stylesheet for gallery, thumbnails, modal & detail panel -->
   <link rel="stylesheet" href="css/maria.css">
 
-  <!-- INTERNAL CSS: Specific layout refinements for the detail page -->
+  <!-- INTERNAL CSS (Midterm Requirement for Maria):
+       Adjusts two-column grid ratio and spacing specifically for item.html -->
   <style>
-    /* Status indicator dot for verified student sellers */
+    /* Two-column layout: left column (gallery) ratio adjusted to 1.3fr vs 1fr for details */
+    .item-detail-layout {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 36px;
+    }
+
+    /* Responsive mobile adjustment: stack into single column */
+    @media (max-width: 820px) {
+      .item-detail-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* Status indicator dot for verified active student sellers */
     .status-dot {
       display: inline-block;
       width: 9px;
       height: 9px;
-      background-color: #16a34a; /* Green online dot */
+      background-color: #16a34a; /* UIW student online indicator */
       border-radius: 50%;
       margin-right: 5px;
+    }
+
+    /* Highlight badge for the details list */
+    .spec-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <!-- ==================== HEADER & NAVIGATION ==================== -->
+  <!-- ==================== SITE HEADER & NAVIGATION ==================== -->
   <header>
     <img src="images/uiwLogo.gif" alt="University of the Incarnate Word logo">
     <h1>Cardinal Market</h1>
-    <!-- Navigation bar highlighting current page -->
+    <!-- Shared site-wide navigation (identical across all 5 pages) -->
     <nav aria-label="Main Navigation">
       <ul>
         <li><a href="index.html">Home</a></li>
@@ -58,7 +91,7 @@
 
   <!-- ==================== MAIN CONTENT ==================== -->
   <main>
-    <!-- Breadcrumbs Navigation -->
+    <!-- Breadcrumb trail -->
     <nav class="item-breadcrumbs" aria-label="Breadcrumb">
       <a href="index.html">Home</a>
       <span>&gt;</span>
@@ -66,94 +99,144 @@
       <span>&gt;</span>
       <span id="breadcrumbCategory">Category</span>
       <span>&gt;</span>
-      <span id="breadcrumbTitle" style="color:#1c1c1c; font-weight:600;">Item Title</span>
+      <!-- INLINE CSS #1 (Maria's custom inline style for breadcrumb emphasis) -->
+      <span id="breadcrumbTitle" style="color: #1c1c1c; font-weight: 700;">Item Title</span>
     </nav>
 
-    <!-- Two-Column Product Layout (Maria's Grid Component) -->
+    <!-- TWO-COLUMN PRODUCT DETAIL LAYOUT (Maria's Component) -->
     <section class="item-detail-layout">
 
-      <!-- LEFT COLUMN: Image Gallery & Safety Notice -->
+      <!-- LEFT COLUMN: Photo Gallery & Campus Safe Zone Notice -->
       <div>
         <div class="gallery-card">
-          <!-- Main Large Photo View -->
-          <div class="main-image-frame">
-            <img id="mainImg" src="images/textbook.svg" alt="Item preview image">
-          </div>
-          <!-- Clickable Thumbnail Selector Row -->
-          <div class="thumbnails-row" id="thumbnailsRow" aria-label="Image thumbnails">
-            <!-- Populated dynamically by maria.js -->
+          <!-- Main Large Photo View with Figure & Figcaption -->
+          <figure class="main-image-figure" style="margin: 0;">
+            <div class="main-image-frame" id="mainImageFrame" title="Click to zoom image">
+              <!-- INLINE CSS #2 (Starter requirement preserved on main image) -->
+              <img id="mainImg" src="images/textbook.svg" alt="Biology Textbook" style="width: 100%;">
+            </div>
+            <figcaption id="mainImgCaption" class="main-image-caption">
+              Primary photo view &bull; Click thumbnails below to inspect details
+            </figcaption>
+          </figure>
+
+          <!-- Row of 3 Thumbnails (Midterm Checklist: 3 clickable thumbnails) -->
+          <div class="thumbnails-row" id="thumbnailsRow" aria-label="Image thumbnails gallery">
+            <button type="button" class="thumb-btn active" data-index="0" aria-label="View photo 1">
+              <img src="images/textbook.svg" alt="Thumbnail 1">
+            </button>
+            <button type="button" class="thumb-btn" data-index="1" aria-label="View photo 2">
+              <img src="images/cardinals-logo.jpg" alt="Thumbnail 2">
+            </button>
+            <button type="button" class="thumb-btn" data-index="2" aria-label="View photo 3">
+              <img src="images/UIW_Backpack.jpg" alt="Thumbnail 3">
+            </button>
           </div>
         </div>
 
         <!-- Campus Safety Card -->
-        <div class="safety-box" style="margin-top: 18px;">
+        <div class="safety-box" style="margin-top: 20px;">
           <h4><span class="status-dot"></span> UIW Safe Exchange Zone Recommended</h4>
           <p>
-            For safety, all Cardinal Market trades should occur in well-lit public campus areas,
-            such as the <strong>J.E. and L.E. Mabee Library</strong> lobby or the
+            For campus safety, schedule meetups in well-lit public areas such as the
+            <strong>J.E. and L.E. Mabee Library</strong> lobby or the
             <strong>Student Engagement Center (SEC)</strong>. Never exchange items off-campus alone.
           </p>
         </div>
       </div>
 
-      <!-- RIGHT COLUMN: Item Information, Seller Profile & Actions -->
+      <!-- RIGHT COLUMN: Item Information, Specs List, Seller & Actions -->
       <article class="details-card">
-        <!-- Tags line -->
+        <!-- Category & Condition Badges -->
         <div class="item-header-meta">
           <span class="category-tag" id="categoryTag">Textbooks</span>
           <span class="condition-badge" id="conditionBadge">Like New</span>
         </div>
 
-        <!-- Item Title -->
-        <h2 class="item-main-title" id="itemTitle">Item Title Loading...</h2>
+        <!-- Product Title -->
+        <h2 class="item-main-title" id="itemTitle">Biology: Concepts &amp; Connections (10th Ed.)</h2>
 
         <!-- Pricing Row -->
         <div class="price-container">
-          <span class="detail-price" id="itemPrice">$0.00</span>
-          <span class="original-price-note" id="originalPrice">$0.00 retail</span>
+          <span class="detail-price" id="itemPrice">$40</span>
+          <span class="original-price-note" id="originalPrice">$135 retail</span>
         </div>
 
-        <!-- Item Description -->
+        <!-- Item Full Description -->
         <p class="item-full-description" id="itemDesc">
-          Loading detailed item description...
+          Used for one semester in BIOL 1401 with Dr. Smith. All pages are intact, pristine condition with zero highlighting, notes, or folded corners. Includes access code scratch-off still sealed on inside back cover. Can meet at the campus library or SEC during weekday afternoons.
         </p>
 
-        <!-- Quick "Make an Offer" Calculator -->
+        <!-- ITEM DETAILS LIST (Midterm Checklist: ul or dl with condition, category, pickup spot, date posted) -->
+        <div class="item-specs-panel">
+          <h3 class="specs-heading">Item Details</h3>
+          <dl class="specs-list">
+            <div class="spec-row">
+              <dt>Condition:</dt>
+              <dd id="detailCondition"><span class="spec-badge">Like New</span></dd>
+            </div>
+            <div class="spec-row">
+              <dt>Category:</dt>
+              <dd id="detailCategory">Textbooks &amp; Study Materials</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Pickup Spot:</dt>
+              <dd id="detailPickup">Mabee Library 1st Floor / SEC Breezeway</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Date Posted:</dt>
+              <dd id="detailDatePosted">October 21, 2026</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Quick "Make an Offer" Calculator (Stretch Goal) -->
         <div class="offer-box">
-          <span>💰 Quick Offer Suggestions:</span>
+          <span>Make an Offer:</span>
           <div class="offer-chips">
             <button type="button" class="offer-btn" data-discount="0.10">Offer 10% Off</button>
             <button type="button" class="offer-btn" data-discount="0.20">Offer 20% Off</button>
+            <button type="button" class="offer-btn" data-discount="0.25">Offer 25% Off</button>
           </div>
-          <p id="offerResult" style="margin: 8px 0 0 0; font-size: 0.82rem; color: #64748b;"></p>
+          <!-- Custom offer input for stretch goal -->
+          <div class="custom-offer-row" style="margin-top: 10px; display: flex; gap: 8px;">
+            <input type="number" id="customOfferInput" placeholder="Custom $ offer" min="1" style="width: 130px; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
+            <button type="button" id="sendCustomOfferBtn" class="btn" style="padding: 6px 14px; font-size: 0.85rem;">Submit Offer</button>
+          </div>
+          <!-- INLINE CSS #3: Custom styled feedback message container -->
+          <p id="offerResult" style="margin: 8px 0 0 0; font-size: 0.85rem; color: #64748b; font-weight: 600;"></p>
         </div>
 
-        <!-- Verified Seller Card -->
+        <!-- Verified Student Seller Card -->
         <div class="seller-profile-card">
-          <div class="seller-avatar">UIW</div>
+          <div class="seller-avatar" id="sellerAvatar">UIW</div>
           <div class="seller-meta">
-            <h4 id="sellerName">Student Seller</h4>
-            <p id="sellerRole">Class of 2026</p>
-            <p id="sellerRating">5.0 ★ • Verified Student</p>
-            <p style="margin-top: 4px; color:#475569;">📍 Pickup: <strong id="meetupLocation">Campus Library</strong></p>
+            <h4 id="sellerName">Maria Frausto</h4>
+            <p id="sellerRole">Biology Major &bull; Class of 2026</p>
+            <p id="sellerRating">4.9 &#9733; (14 reviews) &bull; Verified Student</p>
+            <p style="margin-top: 4px; color: #475569;">Meetup: <strong id="meetupLocation">UIW Mabee Library (1st Floor Lobby)</strong></p>
           </div>
         </div>
 
-        <!-- Call to Action Buttons -->
+        <!-- ACTION BUTTONS: Message Seller & Save Item -->
         <div class="action-buttons-row">
           <!-- Button that opens interactive messaging modal -->
-          <button type="button" class="btn-message-seller" id="openMessageModalBtn">
-            ✉ Message Seller
+          <button type="button" class="btn-message-seller" id="contactBtn">
+            Message Seller
           </button>
-          <!-- Save item to favorites button -->
+          <!-- Save item to favorites button (Toggles text + color) -->
           <button type="button" class="btn-save-item" id="saveItemBtn">
-            <span>♡</span> Save Item
+            <span id="saveHeartIcon">&#9825;</span> <span id="saveBtnText">Save item</span>
           </button>
         </div>
+
+        <!-- CONTACT CONFIRMATION MESSAGE (Midterm Checklist: #contactMsg shows feedback) -->
+        <!-- INLINE CSS #4: Smooth transition and min-height to prevent layout jump -->
+        <p id="contactMsg" style="margin: 4px 0 0 0; font-weight: bold; min-height: 1.4em; transition: all 0.3s ease;"></p>
       </article>
     </section>
 
-    <!-- Recommendations: Similar Campus Items -->
+    <!-- RECOMMENDATIONS: Other Campus Marketplace Listings -->
     <section class="recommendations-section">
       <h3>Other Items You Might Like</h3>
       <div class="recommendations-grid" id="similarItemsGrid">
@@ -170,10 +253,10 @@
         <button type="button" class="btn-close-modal" id="closeModalBtn" aria-label="Close message window">&times;</button>
       </div>
       <div class="modal-body">
-        <label for="sellerMessageInput" style="font-weight:600; font-size:0.9rem;">Your message:</label>
+        <label for="sellerMessageInput" style="font-weight: 600; font-size: 0.9rem;">Your message:</label>
         <textarea
           id="sellerMessageInput"
-          placeholder="Ask a question about availability, condition, or suggest a campus meetup time..."
+          placeholder="Ask about availability, condition, or suggest a campus meetup time..."
           maxlength="300"></textarea>
         <div class="char-counter" id="charCount">0 / 300 characters</div>
         <div class="modal-footer">
@@ -184,7 +267,15 @@
     </div>
   </div>
 
-  <!-- ==================== FOOTER ==================== -->
+  <!-- ==================== IMAGE ZOOM MODAL (Stretch Goal) ==================== -->
+  <div class="modal-overlay" id="imageZoomModal" role="dialog" aria-modal="true" aria-label="Image Zoom">
+    <div class="zoom-modal-window">
+      <button type="button" class="btn-close-zoom" id="closeZoomBtn" aria-label="Close zoom preview">&times;</button>
+      <img id="zoomedImage" src="images/textbook.svg" alt="Zoomed item view">
+    </div>
+  </div>
+
+  <!-- ==================== SITE FOOTER ==================== -->
   <footer>
     <nav aria-label="Footer Navigation">
       <ul>
@@ -198,8 +289,10 @@
     <p>&copy; <span id="year"></span> Cardinal Market - UIW Student Marketplace (CIS 2368 Midterm Project)</p>
   </footer>
 
-  <!-- ==================== JAVASCRIPT FILES ==================== -->
+  <!-- ==================== EXTERNAL JAVASCRIPT ==================== -->
+  <!-- Shared team script first -->
   <script src="js/main.js"></script>
+  <!-- Maria's own script second -->
   <script src="js/maria.js"></script>
 </body>
 </html>

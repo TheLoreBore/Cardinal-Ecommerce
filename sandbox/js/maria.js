@@ -4,22 +4,24 @@
 // Course: CIS 2368 Website Development I - Midterm Project
 // Site: Cardinal Market (UIW Campus Student Marketplace)
 // --------------------------------------------------------------------------
-// MODIFIED FROM CLASS EXAMPLES:
-// 1. Conditionals & Logic (modified from hw8.html / script.js):
-//    Uses if/else branching to parse URL parameters (?id=...) and check whether
-//    an item exists in catalog, falling back gracefully to a default item.
-// 2. DOM Selection & Manipulation (modified from hw7 & inputOutput.html):
-//    Selects elements using document.getElementById and querySelector.
-//    Updates textContent, src, classList, and styles dynamically.
-// 3. Event Handling (modified from hw7 event handlers):
-//    Click listeners for thumbnail switcher, favorite heart toggle, offer
-//    calculator buttons, and modal dialog open/close/send workflow.
-// 4. Inter-Page Data Sharing (localStorage):
-//    Saves messages sent to sellers into localStorage, allowing them to appear
-//    in the Messages thread on Isabella's account.html page!
+// MODIFIED EXAMPLES OF CLASS CODE (MIDTERM REQUIREMENT):
+// 1. sayHello.js (Homework / Class Lesson on Form & DOM Manipulation):
+//    In sayHello.js, inputs are read and formatted text is inserted into
+//    hellowMsg. Here in Maria's script, handleSendMessage() reads the seller
+//    name and message input, calculates timestamps, and injects confirmation
+//    feedback directly into document.getElementById("contactMsg") and
+//    document.getElementById("offerResult").
+// 2. DragAndDrop.js & hw7.html (Event Listeners & Media Switching):
+//    In DragAndDrop.js, event listeners attach to image elements to handle
+//    interactive changes. Here, addEventListener("click", ...) attaches to
+//    each thumbnail button to swap document.getElementById("mainImg").src
+//    with smooth transitions and visual active indicators.
+// 3. Conditionals & Routing (hw8.html):
+//    Uses if/else branching and URLSearchParams to dynamically look up
+//    the item matching ?id=... in the catalog, with safe fallback defaults.
 // ==========================================================================
 
-// Complete dataset of items available for the Item Detail page
+// Catalog of UIW marketplace items for the detail page
 var itemCatalog = {
   textbook: {
     id: "textbook",
@@ -32,9 +34,10 @@ var itemCatalog = {
     sellerRole: "Biology Major • Class of 2026",
     sellerRating: "4.9 ★ (14 reviews)",
     location: "UIW Mabee Library (1st Floor Lobby)",
-    images: ["images/textbook.svg", "images/textbook.svg", "images/textbook.svg"],
+    images: ["images/textbook.svg", "images/UIW_Backpack.jpg", "images/cardinals-logo.jpg"],
     desc: "Used for one semester in BIOL 1401 with Dr. Smith. All pages are intact, pristine condition with zero highlighting, notes, or folded corners. Includes access code scratch-off still sealed on inside back cover. Can meet at the campus library or SEC during weekday afternoons.",
-    department: "School of Mathematics, Science & Engineering"
+    department: "School of Mathematics, Science & Engineering",
+    datePosted: "October 21, 2026"
   },
   lamp: {
     id: "lamp",
@@ -47,9 +50,10 @@ var itemCatalog = {
     sellerRole: "CIS Senior • Class of 2026",
     sellerRating: "5.0 ★ (8 reviews)",
     location: "Student Engagement Center (SEC)",
-    images: ["images/lamp.svg", "images/lamp.svg", "images/lamp.svg"],
+    images: ["images/lamp.svg", "images/desk-chair.svg", "images/mini-fridge.svg"],
     desc: "Modern matte black study lamp with 3 color temperatures (warm, natural, cool white) and touch dimmer control. Flexible gooseneck allows aiming light wherever needed. Works perfectly and includes original AC wall adapter.",
-    department: "Dorm Essentials"
+    department: "Dorm Essentials",
+    datePosted: "October 20, 2026"
   },
   bike: {
     id: "bike",
@@ -62,9 +66,10 @@ var itemCatalog = {
     sellerRole: "Graphic Design • Class of 2027",
     sellerRating: "4.8 ★ (19 reviews)",
     location: "Dubuis Lawn Bike Racks",
-    images: ["images/bike.svg", "images/bike.svg", "images/bike.svg"],
+    images: ["images/bike.svg", "images/yourNextImage.jpg", "images/cardinals-logo.jpg"],
     desc: "Lightweight aluminum frame commuter bicycle. Gears shift smoothly and brakes have plenty of pad life. Fitted with front and rear safety reflectors. Selling because I am bringing a scooter this semester. Includes heavy-duty U-lock and key.",
-    department: "Campus Transportation"
+    department: "Campus Transportation",
+    datePosted: "October 19, 2026"
   },
   hoodie: {
     id: "hoodie",
@@ -77,9 +82,10 @@ var itemCatalog = {
     sellerRole: "Business Administration • Class of 2026",
     sellerRating: "5.0 ★ (11 reviews)",
     location: "Natatorium Breezeway",
-    images: ["images/hoodie.svg", "images/hoodie.svg", "images/hoodie.svg"],
+    images: ["images/hoodie.svg", "images/UIW_Sweatshirt.jpg", "images/tote_bag.jfif"],
     desc: "Authentic Incarnate Word Cardinals hooded sweatshirt in signature Cardinal red. Premium fleece material with embroidered front chest logo. Worn twice during homecoming week. Smoke-free and pet-free home.",
-    department: "Cardinal Spirit Gear"
+    department: "Cardinal Spirit Gear",
+    datePosted: "October 22, 2026"
   },
   "mini-fridge": {
     id: "mini-fridge",
@@ -92,9 +98,10 @@ var itemCatalog = {
     sellerRole: "Nursing Major • Class of 2026",
     sellerRating: "4.9 ★ (7 reviews)",
     location: "Avila Hall Lobby",
-    images: ["images/mini-fridge.svg", "images/mini-fridge.svg", "images/mini-fridge.svg"],
+    images: ["images/mini-fridge.svg", "images/lamp.svg", "images/desk-chair.svg"],
     desc: "Clean and quiet 3.2 cu. ft. double-door compact refrigerator. Runs whisper-quiet (perfect for dorm rooms) and keeps groceries ice cold. Fully defrosted and sanitized, ready for pickup.",
-    department: "Dorm Appliances"
+    department: "Dorm Appliances",
+    datePosted: "October 18, 2026"
   },
   "desk-chair": {
     id: "desk-chair",
@@ -107,9 +114,10 @@ var itemCatalog = {
     sellerRole: "Psychology • Class of 2027",
     sellerRating: "4.7 ★ (12 reviews)",
     location: "McCracken Hall",
-    images: ["images/desk-chair.svg", "images/desk-chair.svg", "images/desk-chair.svg"],
+    images: ["images/desk-chair.svg", "images/mini-fridge.svg", "images/lamp.svg"],
     desc: "High-comfort breathable mesh computer chair with height adjustment and tilt tension lock. Smooth-rolling dual-wheel casters suitable for dorm tile or rugs. Great condition with no tears.",
-    department: "Dorm Furniture"
+    department: "Dorm Furniture",
+    datePosted: "October 20, 2026"
   },
   backpack: {
     id: "backpack",
@@ -122,9 +130,10 @@ var itemCatalog = {
     sellerRole: "Biology Major • Class of 2026",
     sellerRating: "4.9 ★ (14 reviews)",
     location: "UIW Mabee Library",
-    images: ["images/UIW_Backpack.jpg", "images/UIW_Backpack.jpg", "images/UIW_Backpack.jpg"],
+    images: ["images/UIW_Backpack.jpg", "images/tote_bag.jfif", "images/cardinals-logo.jpg"],
     desc: "Heavy-duty collegiate backpack with embroidered UIW Cardinals crest. Features dedicated padded laptop compartment (fits up to 15.6 inch laptops), dual mesh drink holders, and water-resistant base.",
-    department: "Campus Gear"
+    department: "Campus Gear",
+    datePosted: "October 21, 2026"
   },
   sweatshirt: {
     id: "sweatshirt",
@@ -137,9 +146,10 @@ var itemCatalog = {
     sellerRole: "Business Administration • Class of 2026",
     sellerRating: "5.0 ★ (11 reviews)",
     location: "Student Engagement Center",
-    images: ["images/UIW_Sweatshirt.jpg", "images/UIW_Sweatshirt.jpg", "images/UIW_Sweatshirt.jpg"],
+    images: ["images/UIW_Sweatshirt.jpg", "images/hoodie.svg", "images/cardinals-logo.jpg"],
     desc: "Classic cardinal red crewneck sweater with distressed college lettering. Very comfortable and warm for winter classes. Unisex Large.",
-    department: "Cardinal Apparel"
+    department: "Cardinal Apparel",
+    datePosted: "October 17, 2026"
   },
   tote: {
     id: "tote",
@@ -152,9 +162,10 @@ var itemCatalog = {
     sellerRole: "Graphic Design • Class of 2027",
     sellerRating: "4.8 ★ (19 reviews)",
     location: "Kelso Art Center",
-    images: ["images/tote_bag.jfif", "images/tote_bag.jfif", "images/tote_bag.jfif"],
+    images: ["images/tote_bag.jfif", "images/UIW_Backpack.jpg", "images/cardinals-logo.jpg"],
     desc: "100% natural cotton canvas tote with reinforced shoulder straps and bold red cardinal print. Brand new, never used.",
-    department: "Campus Accessories"
+    department: "Campus Accessories",
+    datePosted: "October 22, 2026"
   }
 };
 
@@ -175,16 +186,17 @@ function findItemData(itemId) {
             id: arr[i].id,
             title: arr[i].title,
             price: arr[i].price,
-            originalPrice: arr[i].price * 1.3,
+            originalPrice: Math.round(arr[i].price * 1.3),
             category: arr[i].category,
             condition: arr[i].condition,
             seller: "Current Student (You)",
             sellerRole: "UIW Student • Class of 2026",
             sellerRating: "5.0 ★ (New Seller)",
             location: "UIW Campus Student Engagement Center",
-            images: [arr[i].image, arr[i].image, arr[i].image],
+            images: [arr[i].image || "images/cardinals-logo.jpg", "images/cardinals-logo.jpg", "images/cardinals-logo.jpg"],
             desc: arr[i].desc || "Student listed item on Cardinal Market.",
-            department: "Student Marketplace"
+            department: "Student Marketplace",
+            datePosted: "Recently Added"
           };
         }
       }
@@ -193,12 +205,12 @@ function findItemData(itemId) {
     console.warn("Could not check custom listings:", e);
   }
 
-  // Default fallback if ID not found
+  // Fallback to textbook if itemId not recognized
   return itemCatalog["textbook"];
 }
 
 // --------------------------------------------------------------------------
-// PAGE INITIALIZATION: Parses URL param and renders item details
+// PAGE INITIALIZATION: Runs when the DOM is fully loaded
 // --------------------------------------------------------------------------
 var currentItem = null;
 
@@ -210,11 +222,14 @@ document.addEventListener("DOMContentLoaded", function () {
   var requestedId = params.get("id") || "textbook";
 
   currentItem = findItemData(requestedId);
+
+  // Initialize all page features
   populateItemPage(currentItem);
   setupThumbnailGallery(currentItem);
   setupFavoriteButton(currentItem);
   setupOfferCalculator(currentItem);
   setupMessageModal(currentItem);
+  setupImageZoom();
   renderSimilarItems(currentItem);
 });
 
@@ -224,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function populateItemPage(item) {
   document.title = "Cardinal Market | " + item.title;
 
-  // Breadcrumbs & category tag
+  // Breadcrumbs & category tags
   var breadcrumbCategory = document.getElementById("breadcrumbCategory");
   var breadcrumbTitle    = document.getElementById("breadcrumbTitle");
   var categoryTag        = document.getElementById("categoryTag");
@@ -243,57 +258,85 @@ function populateItemPage(item) {
 
   if (itemTitle) itemTitle.textContent = item.title;
   if (itemPrice) itemPrice.textContent = "$" + item.price;
-  if (originalPrice) originalPrice.textContent = "$" + Math.round(item.originalPrice);
+  if (originalPrice) originalPrice.textContent = "$" + Math.round(item.originalPrice) + " retail";
   if (itemDesc) itemDesc.textContent = item.desc;
+
+  // ITEM DETAILS LIST (Midterm Checklist: condition, category, pickup spot, date posted)
+  var detailCondition = document.getElementById("detailCondition");
+  var detailCategory = document.getElementById("detailCategory");
+  var detailPickup = document.getElementById("detailPickup");
+  var detailDatePosted = document.getElementById("detailDatePosted");
+
+  if (detailCondition) detailCondition.innerHTML = '<span class="spec-badge">' + item.condition + '</span>';
+  if (detailCategory) detailCategory.textContent = item.category;
+  if (detailPickup) detailPickup.textContent = item.location;
+  if (detailDatePosted) detailDatePosted.textContent = item.datePosted || "October 21, 2026";
 
   // Seller card details
   var sellerName = document.getElementById("sellerName");
   var sellerRole = document.getElementById("sellerRole");
   var sellerRating = document.getElementById("sellerRating");
   var meetupLocation = document.getElementById("meetupLocation");
+  var sellerAvatar = document.getElementById("sellerAvatar");
 
   if (sellerName) sellerName.textContent = item.seller;
   if (sellerRole) sellerRole.textContent = item.sellerRole;
-  if (sellerRating) sellerRating.textContent = item.sellerRating;
+  if (sellerRating) sellerRating.textContent = item.sellerRating + " • Verified Student";
   if (meetupLocation) meetupLocation.textContent = item.location;
+  if (sellerAvatar) {
+    var initials = item.seller.split(" ").map(function(n) { return n[0]; }).join("").substring(0, 2);
+    sellerAvatar.textContent = initials || "UIW";
+  }
 }
 
 // --------------------------------------------------------------------------
-// 2. INTERACTIVE THUMBNAIL SWITCHER
+// 2. THUMBNAIL GALLERY SWITCHER (Midterm Checklist Requirement)
+//    Clicking a thumbnail swaps the main image: getElementById('mainImg').src = ...
 // --------------------------------------------------------------------------
 function setupThumbnailGallery(item) {
   var mainImg = document.getElementById("mainImg");
   var thumbsContainer = document.getElementById("thumbnailsRow");
+  var caption = document.getElementById("mainImgCaption");
+
   if (!mainImg || !thumbsContainer) return;
 
+  // Ensure default main image matches item's primary image
   mainImg.src = item.images[0];
   mainImg.alt = item.title;
+
+  // Clear previous thumbnails and build dynamically from item's 3 images
   thumbsContainer.innerHTML = "";
 
   item.images.forEach(function (imgSrc, index) {
     var btn = document.createElement("button");
+    btn.type = "button";
     btn.className = "thumb-btn" + (index === 0 ? " active" : "");
+    btn.setAttribute("data-index", index);
     btn.setAttribute("aria-label", "View photo " + (index + 1));
 
     var thumbImg = document.createElement("img");
     thumbImg.src = imgSrc;
-    thumbImg.alt = "Thumbnail " + (index + 1);
+    thumbImg.alt = item.title + " view " + (index + 1);
 
     btn.appendChild(thumbImg);
 
-    // Click handler to swap primary picture smoothly
+    // CLICK EVENT: Swaps the main image (Required by Rubric)
     btn.addEventListener("click", function () {
-      mainImg.style.opacity = "0.4";
-      setTimeout(function () {
-        mainImg.src = imgSrc;
-        mainImg.style.opacity = "1";
-      }, 150);
-
-      // Update active border state
-      document.querySelectorAll(".thumb-btn").forEach(function (b) {
-        b.classList.remove("active");
-      });
+      // Highlight selected thumbnail
+      var allThumbs = thumbsContainer.querySelectorAll(".thumb-btn");
+      allThumbs.forEach(function (t) { t.classList.remove("active"); });
       btn.classList.add("active");
+
+      // Smooth fade transition
+      mainImg.style.opacity = "0.3";
+      setTimeout(function () {
+        // Core rubric requirement: Swap the main image src
+        document.getElementById("mainImg").src = imgSrc;
+        mainImg.style.opacity = "1";
+        if (caption) {
+          caption.textContent = "Photo " + (index + 1) + " of " + item.images.length + " • " + item.title;
+        }
+      }, 140);
     });
 
     thumbsContainer.appendChild(btn);
@@ -301,12 +344,17 @@ function setupThumbnailGallery(item) {
 }
 
 // --------------------------------------------------------------------------
-// 3. FAVORITE BUTTON (Toggles heart & persists to localStorage)
+// 3. SAVE ITEM BUTTON (Midterm Checklist Requirement)
+//    Toggles between "Save item" and "Saved" (changes text + color)
 // --------------------------------------------------------------------------
 function setupFavoriteButton(item) {
-  var favBtn = document.getElementById("saveItemBtn");
-  if (!favBtn) return;
+  var saveBtn = document.getElementById("saveItemBtn");
+  var saveBtnText = document.getElementById("saveBtnText");
+  var saveHeartIcon = document.getElementById("saveHeartIcon");
 
+  if (!saveBtn) return;
+
+  // Helper to check saved status in localStorage
   function isSaved() {
     try {
       var saved = JSON.parse(localStorage.getItem("cardinal_saved_items") || "[]");
@@ -316,69 +364,54 @@ function setupFavoriteButton(item) {
     }
   }
 
-  function updateBtnUI() {
+  // Updates the visual UI: text and color
+  function updateSaveUI() {
     if (isSaved()) {
-      favBtn.classList.add("active");
-      favBtn.innerHTML = "<span>♥</span> Saved to Account";
+      // Toggle to SAVED state (change text + color)
+      saveBtn.classList.add("saved");
+      if (saveBtnText) saveBtnText.textContent = "Saved";
+      if (saveHeartIcon) saveHeartIcon.innerHTML = "&#9829;"; // Filled heart
     } else {
-      favBtn.classList.remove("active");
-      favBtn.innerHTML = "<span>♡</span> Save Item";
+      // Toggle to SAVE ITEM state (change text + color)
+      saveBtn.classList.remove("saved");
+      if (saveBtnText) saveBtnText.textContent = "Save item";
+      if (saveHeartIcon) saveHeartIcon.innerHTML = "&#9825;"; // Outline heart
     }
   }
 
-  updateBtnUI();
+  // Initial UI state check
+  updateSaveUI();
 
-  favBtn.addEventListener("click", function () {
+  // Click event to toggle saved status
+  saveBtn.addEventListener("click", function () {
     try {
       var saved = JSON.parse(localStorage.getItem("cardinal_saved_items") || "[]");
       var idx = saved.indexOf(item.id);
+
       if (idx === -1) {
         saved.push(item.id);
         localStorage.setItem("cardinal_saved_items", JSON.stringify(saved));
-        showMariaToast("Added <strong>" + item.title + "</strong> to your saved items!");
+        showToast("Saved <strong>" + item.title + "</strong> to your account!");
       } else {
         saved.splice(idx, 1);
         localStorage.setItem("cardinal_saved_items", JSON.stringify(saved));
-        showMariaToast("Removed <strong>" + item.title + "</strong> from saved items.");
+        showToast("Removed <strong>" + item.title + "</strong> from saved items.");
       }
-      updateBtnUI();
+      // Re-render button text and color
+      updateSaveUI();
     } catch (e) {
-      console.warn("Could not toggle favorite:", e);
+      console.warn("Could not toggle saved status:", e);
     }
   });
 }
 
 // --------------------------------------------------------------------------
-// 4. "MAKE AN OFFER" CALCULATOR (Demonstrates math & DOM updates)
-// --------------------------------------------------------------------------
-function setupOfferCalculator(item) {
-  var offerButtons = document.querySelectorAll(".offer-btn");
-  var offerResult = document.getElementById("offerResult");
-
-  offerButtons.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var discount = parseFloat(btn.getAttribute("data-discount"));
-      var offerPrice = Math.round(item.price * (1 - discount));
-      if (offerResult) {
-        offerResult.innerHTML = "Suggested offer: <strong>$" + offerPrice + "</strong> (saves $" + (item.price - offerPrice) + ") • Open message to send this offer!";
-        offerResult.style.color = "#15803d";
-        offerResult.style.fontWeight = "bold";
-      }
-
-      // Automatically prefill message box with the offer
-      var msgBox = document.getElementById("sellerMessageInput");
-      if (msgBox) {
-        msgBox.value = "Hi " + item.seller + ", would you consider $" + offerPrice + " for your " + item.title + "? I can pick it up at " + item.location + " today!";
-      }
-    });
-  });
-}
-
-// --------------------------------------------------------------------------
-// 5. "MESSAGE SELLER" INTERACTIVE MODAL DIALOG
+// 4. "MESSAGE SELLER" & #contactMsg FEEDBACK (Midterm Checklist Requirement)
+//    Modified from sayHello.js: Reads inputs, performs action, and writes
+//    confirmation message directly into #contactMsg.
 // --------------------------------------------------------------------------
 function setupMessageModal(item) {
-  var openBtn = document.getElementById("openMessageModalBtn");
+  var contactBtn = document.getElementById("contactBtn");
   var modalOverlay = document.getElementById("messageModalOverlay");
   var closeBtn = document.getElementById("closeModalBtn");
   var cancelBtn = document.getElementById("cancelModalBtn");
@@ -386,14 +419,15 @@ function setupMessageModal(item) {
   var msgInput = document.getElementById("sellerMessageInput");
   var charCount = document.getElementById("charCount");
   var modalRecipient = document.getElementById("modalRecipient");
+  var contactMsg = document.getElementById("contactMsg");
 
-  if (!openBtn || !modalOverlay) return;
+  if (!contactBtn || !modalOverlay) return;
 
   if (modalRecipient) {
     modalRecipient.textContent = item.seller;
   }
 
-  // Pre-fill greeting if empty
+  // Pre-fill friendly greeting message
   if (msgInput && msgInput.value.trim() === "") {
     msgInput.value = "Hi " + item.seller + "! Is your " + item.title + " still available? I can meet you at " + item.location + ".";
   }
@@ -416,21 +450,21 @@ function setupMessageModal(item) {
     }
   }
 
-  openBtn.addEventListener("click", openModal);
+  contactBtn.addEventListener("click", openModal);
   if (closeBtn) closeBtn.addEventListener("click", closeModal);
   if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
 
-  // Close when clicking outside the dialog window
+  // Close when clicking backdrop
   modalOverlay.addEventListener("click", function (e) {
     if (e.target === modalOverlay) closeModal();
   });
 
-  // Live character counter
+  // Character counter
   if (msgInput) {
     msgInput.addEventListener("input", updateCharCount);
   }
 
-  // Send message action
+  // SEND MESSAGE HANDLER (Directly satisfies #contactMsg requirement)
   if (sendBtn) {
     sendBtn.addEventListener("click", function () {
       var text = msgInput ? msgInput.value.trim() : "";
@@ -439,7 +473,7 @@ function setupMessageModal(item) {
         return;
       }
 
-      // Save message to localStorage so it persists to Account page
+      // Persist to localStorage for Isabella's account.html
       try {
         var existing = JSON.parse(localStorage.getItem("cardinal_messages") || "[]");
         existing.push({
@@ -455,13 +489,132 @@ function setupMessageModal(item) {
       }
 
       closeModal();
-      showMariaToast("Message sent to <strong>" + item.seller + "</strong>! Saved to your Account messages.");
+
+      // REQUIRED CHECKLIST: Display confirmation text in #contactMsg
+      if (contactMsg) {
+        contactMsg.textContent = "Message sent to " + item.seller + "! (Saved to Account)";
+        contactMsg.style.color = "#15803d";
+      }
+
+      showToast("Message sent to <strong>" + item.seller + "</strong>! Saved to your Account messages.");
     });
   }
 }
 
 // --------------------------------------------------------------------------
-// 6. SIMILAR ITEMS RECOMMENDATIONS
+// 5. "MAKE AN OFFER" CALCULATOR (Stretch Goal: Offer input & feedback)
+// --------------------------------------------------------------------------
+function setupOfferCalculator(item) {
+  var offerButtons = document.querySelectorAll(".offer-btn");
+  var offerResult = document.getElementById("offerResult");
+  var customOfferInput = document.getElementById("customOfferInput");
+  var sendCustomOfferBtn = document.getElementById("sendCustomOfferBtn");
+  var contactMsg = document.getElementById("contactMsg");
+
+  // Quick percentage discount chips
+  offerButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var discount = parseFloat(btn.getAttribute("data-discount"));
+      var offerPrice = Math.round(item.price * (1 - discount));
+      if (offerResult) {
+        offerResult.innerHTML = "Suggested offer: <strong>$" + offerPrice + "</strong> (saves $" + (item.price - offerPrice) + ") • Click 'Submit Offer' or 'Message Seller'";
+        offerResult.style.color = "#15803d";
+      }
+      if (customOfferInput) {
+        customOfferInput.value = offerPrice;
+      }
+    });
+  });
+
+  // Custom offer submission
+  if (sendCustomOfferBtn && customOfferInput) {
+    sendCustomOfferBtn.addEventListener("click", function () {
+      var val = parseFloat(customOfferInput.value);
+      if (isNaN(val) || val <= 0) {
+        alert("Please enter a valid offer dollar amount.");
+        return;
+      }
+
+      // Stretch goal requirement: shows "Offer: $X sent"
+      var offerText = "Offer: $" + Math.round(val) + " sent to " + item.seller + "!";
+      if (contactMsg) {
+        contactMsg.textContent = offerText;
+        contactMsg.style.color = "#15803d";
+      }
+      if (offerResult) {
+        offerResult.textContent = offerText;
+        offerResult.style.color = "#15803d";
+      }
+      showToast(offerText);
+    });
+  }
+}
+
+// --------------------------------------------------------------------------
+// 6. IMAGE ZOOM ON CLICK (Stretch Goal)
+// --------------------------------------------------------------------------
+function setupImageZoom() {
+  var frame = document.getElementById("mainImageFrame");
+  var mainImg = document.getElementById("mainImg");
+  var zoomModal = document.getElementById("imageZoomModal");
+  var zoomedImg = document.getElementById("zoomedImage");
+  var closeZoomBtn = document.getElementById("closeZoomBtn");
+
+  if (!frame || !mainImg || !zoomModal || !zoomedImg) return;
+
+  frame.addEventListener("click", function () {
+    zoomedImg.src = mainImg.src;
+    zoomedImg.alt = mainImg.alt;
+    zoomModal.classList.add("active");
+  });
+
+  if (closeZoomBtn) {
+    closeZoomBtn.addEventListener("click", function () {
+      zoomModal.classList.remove("active");
+    });
+  }
+
+  zoomModal.addEventListener("click", function (e) {
+    if (e.target === zoomModal) {
+      zoomModal.classList.remove("active");
+    }
+  });
+}
+
+// --------------------------------------------------------------------------
+// 7. TOAST NOTIFICATION POPUP
+// --------------------------------------------------------------------------
+function showToast(messageHtml) {
+  var existing = document.getElementById("mariaToastNotification");
+  if (existing) existing.remove();
+
+  var toast = document.createElement("div");
+  toast.id = "mariaToastNotification";
+  toast.style.position = "fixed";
+  toast.style.bottom = "24px";
+  toast.style.right = "24px";
+  toast.style.backgroundColor = "#1e293b";
+  toast.style.color = "#ffffff";
+  toast.style.padding = "14px 20px";
+  toast.style.borderRadius = "8px";
+  toast.style.boxShadow = "0 10px 25px rgba(0,0,0,0.2)";
+  toast.style.fontSize = "0.92rem";
+  toast.style.zIndex = "99999";
+  toast.style.transition = "all 0.3s ease";
+  toast.style.borderLeft = "4px solid #c8102e";
+  toast.innerHTML = messageHtml;
+
+  document.body.appendChild(toast);
+
+  setTimeout(function () {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(10px)";
+    setTimeout(function () { toast.remove(); }, 350);
+  }, 3200);
+}
+
+// --------------------------------------------------------------------------
+// 8. SIMILAR ITEMS RECOMMENDATIONS
 // --------------------------------------------------------------------------
 function renderSimilarItems(item) {
   var container = document.getElementById("similarItemsGrid");
@@ -469,7 +622,7 @@ function renderSimilarItems(item) {
 
   container.innerHTML = "";
 
-  // Find 3 other items in catalog
+  // Pick 3 other items in catalog
   var keys = Object.keys(itemCatalog).filter(function (k) {
     return k !== item.id;
   }).slice(0, 3);
@@ -486,22 +639,4 @@ function renderSimilarItems(item) {
       '<a class="btn" style="padding:6px 12px; font-size:0.82rem;" href="item.html?id=' + rec.id + '">View Details</a>';
     container.appendChild(card);
   });
-}
-
-// --------------------------------------------------------------------------
-// 7. TOAST FEEDBACK NOTIFICATION
-// --------------------------------------------------------------------------
-function showMariaToast(msg) {
-  var toast = document.getElementById("itemToast");
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.id = "itemToast";
-    toast.className = "toast-notice";
-    document.body.appendChild(toast);
-  }
-  toast.innerHTML = "<span>✓</span> " + msg;
-  toast.classList.add("show");
-  setTimeout(function () {
-    toast.classList.remove("show");
-  }, 2800);
 }

@@ -5,10 +5,15 @@
    Site: Cardinal Market (UIW Campus Student Marketplace)
    --------------------------------------------------------------------------
    MODIFIED FROM CLASS:
-   - Extends CSS Grid and Flexbox layouts from class exercises (hw5 & hw6).
-   - Two-column responsive product layout that stacks gracefully on mobile devices.
-   - Modern modal dialog styling with glassmorphism backdrop blur.
-   - Interactive thumbnail gallery hover states, active borders, and transitions.
+   1. CSS Grid & Responsive Layouts (modified from hw5.html & hw6.html):
+      Uses CSS Grid with custom column fractional units (fr) and Flexbox
+      for alignment. Stacks gracefully into single-column layout on phones.
+   2. Box Model & UI Tokens (modified from sandbox main.css):
+      Integrates UIW branding (--cardinal, --cardinal-dark, --dark, --light)
+      with clean borders, border-radius, shadows, and padding.
+   3. Interactive States & Micro-interactions:
+      Thumbnail hover lifts (transform: translateY(-3px)), border highlights,
+      active state glows, and modal backdrop blur transitions.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -34,25 +39,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. TWO-COLUMN PRODUCT DETAIL LAYOUT
-   -------------------------------------------------------------------------- */
-.item-detail-layout {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: 28px;
-  align-items: start;
-  margin-bottom: 36px;
-}
-
-/* Responsive breakpoint: stack columns on mobile screens */
-@media (max-width: 820px) {
-  .item-detail-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   3. PHOTO GALLERY COMPONENT (Left Column)
+   2. PHOTO GALLERY COMPONENT (Left Column)
    -------------------------------------------------------------------------- */
 .gallery-card {
   background: var(--white);
@@ -60,6 +47,12 @@
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
+}
+
+.main-image-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-image-frame {
@@ -73,6 +66,7 @@
   overflow: hidden;
   position: relative;
   border: 1px solid #f1f5f9;
+  cursor: zoom-in;
 }
 
 .main-image-frame img {
@@ -82,17 +76,34 @@
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-/* Thumbnail selector row */
+.main-image-frame:hover img {
+  transform: scale(1.02);
+}
+
+.main-image-caption {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #64748b;
+  text-align: center;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   3. THUMBNAIL SELECTOR ROW (Midterm Requirement)
+   Style thumbnails: size, border, :hover highlight, and active state
+   -------------------------------------------------------------------------- */
 .thumbnails-row {
   display: flex;
   gap: 12px;
   margin-top: 14px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
+/* Size: 76px x 76px; Border: 2px solid light slate */
 .thumb-btn {
-  width: 72px;
-  height: 72px;
+  width: 76px;
+  height: 76px;
   border-radius: 8px;
   border: 2px solid #e2e8f0;
   background: #f8fafc;
@@ -101,27 +112,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
+  outline: none;
 }
 
 .thumb-btn img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  border-radius: 4px;
 }
 
+/* :hover highlight: cardinal red border, lift up 3px, and drop shadow */
 .thumb-btn:hover {
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
+  border-color: var(--cardinal);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(200, 16, 46, 0.2);
 }
 
+/* Active selected thumbnail highlight */
 .thumb-btn.active {
   border-color: var(--cardinal);
-  box-shadow: 0 0 0 2px rgba(200, 16, 46, 0.2);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.25);
+  background: #ffffff;
 }
 
 /* --------------------------------------------------------------------------
-   4. ITEM DETAILS & ACTIONS (Right Column)
+   4. DETAILS PANEL & SPECIFICATIONS LIST (Right Column)
+   Midterm Requirement: Style the details panel & details list (<dl>)
    -------------------------------------------------------------------------- */
 .details-card {
   background: var(--white);
@@ -192,22 +210,73 @@
   font-size: 0.95rem;
   color: #334155;
   line-height: 1.6;
+  margin: 0;
   padding-bottom: 14px;
   border-bottom: 1px solid #f1f5f9;
 }
 
-/* Quick Make an Offer tool */
-.offer-box {
+/* Item Specifications Panel (<dl> list) */
+.item-specs-panel {
   background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.specs-heading {
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  color: #1e293b;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.specs-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  padding: 4px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.spec-row:last-child {
+  border-bottom: none;
+}
+
+.spec-row dt {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.spec-row dd {
+  margin: 0;
+  color: #0f172a;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Quick Make an Offer tool (Stretch Goal) */
+.offer-box {
+  background: #fdf2f4;
   border-radius: 8px;
   padding: 12px 14px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #fecdd3;
 }
 
 .offer-box span {
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #475569;
+  font-weight: 700;
+  color: var(--cardinal-dark);
 }
 
 .offer-chips {
@@ -219,13 +288,13 @@
 
 .offer-btn {
   background: #ffffff;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #fca5a5;
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.82rem;
   cursor: pointer;
   font-weight: 600;
-  color: #334155;
+  color: var(--cardinal);
   transition: all 0.2s ease;
 }
 
@@ -253,14 +322,16 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-message-seller:hover {
   background: #9d0d24;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.25);
 }
 
+/* Save item button (Toggles between "Save item" and "Saved" with color change) */
 .btn-save-item {
   flex: 1;
   min-width: 140px;
@@ -276,17 +347,19 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-save-item:hover {
   background: #e2e8f0;
 }
 
-.btn-save-item.active {
+/* Saved state: changes text and toggles to deep red/pink accent */
+.btn-save-item.saved {
   background: #ffe4e6;
   border-color: #fda4af;
-  color: #e11d48;
+  color: var(--cardinal);
+  font-weight: 700;
 }
 
 /* --------------------------------------------------------------------------
@@ -313,6 +386,7 @@
   justify-content: center;
   font-weight: bold;
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .seller-meta h4 {
@@ -358,7 +432,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -430,6 +504,7 @@
   font-size: 0.95rem;
   outline: none;
   resize: vertical;
+  box-sizing: border-box;
 }
 
 .modal-body textarea:focus {
@@ -467,6 +542,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.2s ease;
 }
 
 .btn-modal-send:hover {
@@ -474,7 +550,47 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. SIMILAR ITEMS RECOMMENDATIONS
+   7. IMAGE ZOOM MODAL (Stretch Goal)
+   -------------------------------------------------------------------------- */
+.zoom-modal-window {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-modal-window img {
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 12px;
+}
+
+.btn-close-zoom {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--cardinal);
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   8. SIMILAR ITEMS RECOMMENDATIONS
    -------------------------------------------------------------------------- */
 .recommendations-section {
   margin-top: 40px;
