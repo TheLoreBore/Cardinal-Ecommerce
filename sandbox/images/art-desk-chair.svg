@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Line drawing of an ergonomic mesh office chair with a red seat">
+  <g stroke="#1a1a1a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <defs><clipPath id="back"><rect x="138" y="26" width="124" height="124" rx="42"/></clipPath></defs>
+    <!-- mesh back with crosshatch -->
+    <rect x="138" y="26" width="124" height="124" rx="42" fill="#fffdf5"/>
+    <g clip-path="url(#back)" stroke-width="2.5">
+      <path d="M120 50 L280 210 M120 80 L250 210 M120 110 L220 210 M120 20 L280 180 M150 10 L280 140 M190 10 L280 100"/>
+      <path d="M280 50 L120 210 M280 80 L150 210 M280 110 L180 210 M280 20 L120 180 M250 10 L120 140 M210 10 L120 100"/>
+    </g>
+    <rect x="138" y="26" width="124" height="124" rx="42"/>
+    <!-- armrests -->
+    <path d="M146 168 V128 H122 M254 168 V128 H278" stroke-width="7"/>
+    <!-- seat -->
+    <rect x="120" y="164" width="160" height="36" rx="16" fill="#c8102e"/>
+    <!-- gas-lift stem + star base with wheels -->
+    <path d="M200 200 V240" stroke-width="10"/>
+    <path d="M200 240 L112 262 M200 240 L288 262 M200 240 L156 276 M200 240 L244 276" stroke-width="7"/>
+    <circle cx="110" cy="270" r="9" fill="#fffdf5"/>
+    <circle cx="290" cy="270" r="9" fill="#fffdf5"/>
+    <path d="M316 44 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#fffdf5" stroke-width="3"/>
+    <path d="M50 60 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#fffdf5" stroke-width="3"/>
+  </g>
+</svg>

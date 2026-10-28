@@ -28,7 +28,7 @@ var catalogItems = [
     price: 40,
     category: "books",
     condition: "Like New",
-    image: "images/textbook.svg",
+    image: "images/art-textbook.svg",
     seller: "Maria Frausto",
     location: "UIW Mabee Library",
     desc: "Used for one semester in BIOL 1401. Clean pages with no highlighting or dog-ears."
@@ -39,7 +39,7 @@ var catalogItems = [
     price: 12,
     category: "furniture",
     condition: "Good",
-    image: "images/lamp.svg",
+    image: "images/art-lamp.svg",
     seller: "Nathan Ortiz",
     location: "Student Engagement Center",
     desc: "Bright multi-level LED desk lamp with flexible neck and built-in USB charging port."
@@ -50,7 +50,7 @@ var catalogItems = [
     price: 85,
     category: "other",
     condition: "Good",
-    image: "images/bike.svg",
+    image: "images/art-bike.svg",
     seller: "Isabella Gomez",
     location: "Dubuis Lawn Bike Racks",
     desc: "Reliable road bike with tune-up done last month. Includes cable lock and helmet."
@@ -61,7 +61,7 @@ var catalogItems = [
     price: 28,
     category: "clothing",
     condition: "Like New",
-    image: "images/hoodie.svg",
+    image: "images/art-hoodie.svg",
     seller: "Sophia Gomez",
     location: "Natatorium Breezeway",
     desc: "Size Medium red UIW athletic hoodie. Super soft fleece lining, barely worn."
@@ -72,7 +72,7 @@ var catalogItems = [
     price: 65,
     category: "furniture",
     condition: "Excellent",
-    image: "images/mini-fridge.svg",
+    image: "images/art-mini-fridge.svg",
     seller: "Carlos Mendoza",
     location: "Avila Hall Lobby",
     desc: "Energy Star certified 3.2 cu. ft. mini fridge. Clean and chills drinks fast."
@@ -83,7 +83,7 @@ var catalogItems = [
     price: 45,
     category: "furniture",
     condition: "Good",
-    image: "images/desk-chair.svg",
+    image: "images/art-desk-chair.svg",
     seller: "Alex Rivera",
     location: "McCracken Hall",
     desc: "Breathable mesh back with adjustable lumbar support and pneumatic height control."

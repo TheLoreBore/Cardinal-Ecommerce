@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Line drawing of a commuter bicycle with red tires">
+  <g stroke="#1a1a1a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- wheels: red tire, white inside, spokes -->
+    <circle cx="105" cy="200" r="58" fill="#fffdf5"/>
+    <circle cx="105" cy="200" r="58" stroke="#c8102e" stroke-width="9"/>
+    <circle cx="295" cy="200" r="58" fill="#fffdf5"/>
+    <circle cx="295" cy="200" r="58" stroke="#c8102e" stroke-width="9"/>
+    <path d="M105 142 V258 M47 200 H163 M64 159 L146 241 M146 159 L64 241" stroke-width="2.5"/>
+    <path d="M295 142 V258 M237 200 H353 M254 159 L336 241 M336 159 L254 241" stroke-width="2.5"/>
+    <!-- frame -->
+    <path d="M105 200 L160 122 L262 122 L295 200 M105 200 L190 200 L160 122 M190 200 L262 122" stroke-width="7"/>
+    <!-- seat and handlebars -->
+    <path d="M142 108 H184" stroke-width="10"/>
+    <path d="M262 122 L254 94 H286" stroke-width="7"/>
+    <!-- pedal crank -->
+    <circle cx="190" cy="200" r="13" fill="#fffdf5"/>
+    <path d="M190 200 L206 228" stroke-width="7"/>
+    <path d="M330 60 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#fffdf5" stroke-width="3"/>
+    <path d="M40 60 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 z" fill="#fffdf5" stroke-width="3"/>
+  </g>
+</svg>
