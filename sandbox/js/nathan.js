@@ -28,7 +28,7 @@ var catalogItems = [
     price: 40,
     category: "books",
     condition: "Like New",
-    image: "images/art-textbook.svg",
+    image: "images/textbook.svg",
     seller: "Maria Frausto",
     location: "UIW Mabee Library",
     desc: "Used for one semester in BIOL 1401. Clean pages with no highlighting or dog-ears."
@@ -39,7 +39,7 @@ var catalogItems = [
     price: 12,
     category: "furniture",
     condition: "Good",
-    image: "images/art-lamp.svg",
+    image: "images/lamp.svg",
     seller: "Nathan Ortiz",
     location: "Student Engagement Center",
     desc: "Bright multi-level LED desk lamp with flexible neck and built-in USB charging port."
@@ -50,7 +50,7 @@ var catalogItems = [
     price: 85,
     category: "other",
     condition: "Good",
-    image: "images/art-bike.svg",
+    image: "images/bike.svg",
     seller: "Isabella Gomez",
     location: "Dubuis Lawn Bike Racks",
     desc: "Reliable road bike with tune-up done last month. Includes cable lock and helmet."
@@ -61,7 +61,7 @@ var catalogItems = [
     price: 28,
     category: "clothing",
     condition: "Like New",
-    image: "images/art-hoodie.svg",
+    image: "images/hoodie.svg",
     seller: "Sophia Gomez",
     location: "Natatorium Breezeway",
     desc: "Size Medium red UIW athletic hoodie. Super soft fleece lining, barely worn."
@@ -72,7 +72,7 @@ var catalogItems = [
     price: 65,
     category: "furniture",
     condition: "Excellent",
-    image: "images/art-mini-fridge.svg",
+    image: "images/mini-fridge.svg",
     seller: "Carlos Mendoza",
     location: "Avila Hall Lobby",
     desc: "Energy Star certified 3.2 cu. ft. mini fridge. Clean and chills drinks fast."
@@ -83,7 +83,7 @@ var catalogItems = [
     price: 45,
     category: "furniture",
     condition: "Good",
-    image: "images/art-desk-chair.svg",
+    image: "images/desk-chair.svg",
     seller: "Alex Rivera",
     location: "McCracken Hall",
     desc: "Breathable mesh back with adjustable lumbar support and pneumatic height control."
@@ -141,32 +141,6 @@ function loadAllListings() {
 
 // Global active inventory
 var allListings = loadAllListings();
-
-// Wizard-themed names shown on each card's category sticker.
-// (An object used as a lookup table, modified from the hw7/hw8 object examples.
-//  The data-category VALUES stay books/furniture/clothing/other so filtering still works.)
-var categoryLabels = {
-  books: "Tome",
-  furniture: "Dorm Magic",
-  clothing: "Robes & Gear",
-  other: "Mystery"
-};
-
-// The wizard's speech bubble text (the <p id="wizardSays"> in listings.html)
-var wizardSays = document.getElementById("wizardSays");
-
-// Changes what the wizard says depending on how many items matched
-// (if / else if / else conditionals, modified from hw8.html)
-function updateWizardSays(count, query) {
-  if (!wizardSays) return;
-  if (count === 0) {
-    wizardSays.textContent = "Hmm... my crystal ball shows nothing. Try another spell!";
-  } else if (query !== "") {
-    wizardSays.textContent = "Ooh! I found " + count + (count === 1 ? " treasure" : " treasures") + " for \"" + query + "\"!";
-  } else {
-    wizardSays.textContent = "Welcome, traveler! " + count + " treasures are on the shelves today.";
-  }
-}
 
 // DOM references for Nathan's interactive filters
 var searchInput   = document.getElementById("search");
@@ -231,8 +205,8 @@ function renderListings(itemsToRender) {
     var emptyBox = document.createElement("div");
     emptyBox.className = "no-results-box card";
     emptyBox.innerHTML =
-      "<h3>No items found!</h3>" +
-      "<p>The spell fizzled. Nothing matches your current search or category filter.</p>" +
+      "<h3>No Listings Found</h3>" +
+      "<p>We couldn't find any items matching your current search or category filter.</p>" +
       "<button class=\"btn-reset-filters\" onclick=\"resetAllFilters()\">Reset All Filters</button>";
     gridContainer.appendChild(emptyBox);
     return;
@@ -250,7 +224,7 @@ function renderListings(itemsToRender) {
 
     card.innerHTML =
       '<div class="card-media">' +
-        '<span class="badge-category">' + (categoryLabels[item.category] || item.category) + '</span>' +
+        '<span class="badge-category">' + item.category + '</span>' +
         '<button class="btn-fav-card ' + (isFavorited ? 'active' : '') + '" title="Save to Favorites" data-id="' + item.id + '" aria-label="Favorite item">' +
           (isFavorited ? '♥' : '♡') +
         '</button>' +
@@ -338,7 +312,6 @@ function applyFilters() {
   }
 
   renderListings(filtered);
-  updateWizardSays(filtered.length, query);
 }
 
 // Reset filters back to defaults
@@ -350,128 +323,10 @@ function resetAllFilters() {
 }
 
 // --------------------------------------------------------------------------
-// BACKGROUND MUSIC: a looping "wizard shop" melody made with the Web Audio API.
-// No audio file is needed - JavaScript plays the notes itself, so there is no
-// copyright issue. (New idea beyond class: AudioContext + oscillators, but the
-// loop/array/function structure is modified from the hw7 array + loop examples.)
-//
-// BROWSER RULE: browsers block sound until the visitor clicks, taps, or presses
-// a key on the page. So the music starts the moment you do any of those, and the
-// button in the sidebar lets you turn it off (the choice is saved in localStorage).
-// --------------------------------------------------------------------------
-var musicCtx = null;        // the AudioContext (created once)
-var musicOn = true;         // does the visitor want music?
-var musicStep = 0;          // which note of the loop is next
-var musicNextTime = 0;      // audio-clock time when the next note should play
-var STEP_SECONDS = 0.28;    // length of one note (smaller = faster song)
-
-// Four chords, 8 notes each (arpeggios in A minor: Am - F - C - G), in Hz
-var arpeggios = [
-  [220.00, 261.63, 329.63, 440.00, 329.63, 261.63, 329.63, 261.63],
-  [174.61, 220.00, 261.63, 349.23, 261.63, 220.00, 261.63, 220.00],
-  [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 392.00, 329.63],
-  [196.00, 246.94, 293.66, 392.00, 293.66, 246.94, 293.66, 246.94]
-];
-var bassNotes = [110.00, 87.31, 130.81, 98.00]; // one low note per chord
-
-// Play one note: an oscillator whose volume fades in and out so it sounds soft
-function playNote(freq, startTime, length, wave, volume) {
-  var osc = musicCtx.createOscillator();
-  var gain = musicCtx.createGain();
-  osc.type = wave;
-  osc.frequency.value = freq;
-  gain.gain.setValueAtTime(0.0001, startTime);
-  gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.03);
-  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + length);
-  osc.connect(gain);
-  gain.connect(musicCtx.destination);
-  osc.start(startTime);
-  osc.stop(startTime + length + 0.05);
-}
-
-// Schedules notes slightly ahead of the audio clock so the beat stays steady
-function scheduleMusic() {
-  if (!musicCtx) return;
-  while (musicNextTime < musicCtx.currentTime + 0.4) {
-    var chord = Math.floor(musicStep / 8) % arpeggios.length;
-    var beat = musicStep % 8;
-    playNote(arpeggios[chord][beat], musicNextTime, 0.45, "triangle", 0.07);
-    if (beat === 0 || beat === 4) {
-      playNote(bassNotes[chord], musicNextTime, 0.9, "sine", 0.09);
-    }
-    if (beat === 7) { // a tiny "magic chime" at the end of each bar
-      playNote(arpeggios[chord][3] * 2, musicNextTime, 0.5, "sine", 0.03);
-    }
-    musicNextTime += STEP_SECONDS;
-    musicStep += 1;
-  }
-}
-
-// Updates the button text so the visitor knows what will happen
-function updateMusicButton() {
-  var btn = document.getElementById("musicToggle");
-  if (!btn) return;
-  var playing = musicOn && musicCtx && musicCtx.state === "running";
-  btn.setAttribute("aria-pressed", musicOn ? "true" : "false");
-  if (!musicOn) {
-    btn.textContent = "♪ Music: OFF";
-  } else if (playing) {
-    btn.textContent = "♪ Music: ON";
-  } else {
-    btn.textContent = "♪ Click anywhere to start music";
-  }
-}
-
-// Start (or resume) the music. Safe to call many times.
-function startMusic() {
-  if (!musicOn) return;
-  if (!musicCtx) {
-    var AudioCtor = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtor) return; // very old browser: just skip the music
-    musicCtx = new AudioCtor();
-    musicNextTime = musicCtx.currentTime + 0.1;
-    setInterval(scheduleMusic, 100);
-  }
-  musicCtx.resume().then(updateMusicButton);
-}
-
-function stopMusic() {
-  if (musicCtx) musicCtx.suspend().then(updateMusicButton);
-}
-
-function initMusic() {
-  try {
-    musicOn = localStorage.getItem("cardinal_music") !== "off";
-  } catch (e) {
-    musicOn = true;
-  }
-
-  var btn = document.getElementById("musicToggle");
-  if (btn) {
-    btn.addEventListener("click", function () {
-      musicOn = !musicOn;
-      try { localStorage.setItem("cardinal_music", musicOn ? "on" : "off"); } catch (e) {}
-      if (musicOn) { startMusic(); } else { stopMusic(); }
-      updateMusicButton();
-    });
-  }
-
-  // First click / tap / key press anywhere on the page unlocks the audio
-  ["pointerdown", "keydown", "touchstart"].forEach(function (evt) {
-    document.addEventListener(evt, function () { startMusic(); }, { once: false, passive: true });
-  });
-
-  startMusic();        // try right away (works if the browser already allows sound)
-  updateMusicButton(); // otherwise the button says "Click anywhere to start music"
-}
-
-// --------------------------------------------------------------------------
 // INITIALIZATION ON DOM READY
 // --------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Nathan's browse page script initialized successfully!");
-
-  initMusic();
 
   // Hook up event listeners for instant reactive filtering
   if (searchInput) {
