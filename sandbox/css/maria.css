@@ -1,52 +1,109 @@
-﻿/* ==========================================================================
-   maria.css - EXTERNAL STYLESHEET FOR ITEM DETAIL PAGE
+/* ==========================================================================
+   maria.css - EXTERNAL STYLESHEET FOR ITEM DETAIL PAGE (HALLOWEEN EDITION 🎃)
    Author: Maria Frausto
    Course: CIS 2368 Website Development I - Midterm Project
-   Site: Cardinal Market (UIW Campus Student Marketplace)
+   Site: Cardinal Market / Cardinal Finds (UIW Campus Student Marketplace)
    --------------------------------------------------------------------------
    MODIFIED FROM CLASS:
-   1. CSS Grid & Responsive Layouts (modified from hw5.html & hw6.html):
-      Uses CSS Grid with custom column fractional units (fr) and Flexbox
-      for alignment. Stacks gracefully into single-column layout on phones.
-   2. Box Model & UI Tokens (modified from sandbox main.css):
-      Integrates UIW branding (--cardinal, --cardinal-dark, --dark, --light)
-      with clean borders, border-radius, shadows, and padding.
-   3. Interactive States & Micro-interactions:
-      Thumbnail hover lifts (transform: translateY(-3px)), border highlights,
-      active state glows, and modal backdrop blur transitions.
+   - Builds on Prof. Idar's lessons on CSS Selectors, Box Model, and layout (hw5 & hw6).
+   - Enhances class concepts by using CSS Grid (two-column product inspection layout)
+     and Flexbox for responsive, mobile-first design.
+   - Utilizes CSS custom variables (:root from main.css), hover transformations,
+     and micro-interactions for a polished e-commerce experience.
+   - Infuses an October Halloween theme (midnight purple #1b1035, pumpkin orange #ff8c24,
+     spooky purple #7d35a5) for a festive campus seasonal shopping experience.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. BREADCRUMB NAVIGATION
+   1. HALLOWEEN THEME & PAGE BACKGROUND
+   -------------------------------------------------------------------------- */
+.fun-finds-page {
+  background: linear-gradient(
+    180deg,
+    #1b1035 0%,
+    #2a1645 35%,
+    #3d1e5a 70%,
+    #f8f2eb 100%
+  );
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Header branding sparkle */
+.brand-sparkle {
+  color: #ff8c24;
+  margin-left: 6px;
+  display: inline-block;
+  animation: sparklePulse 2.5s infinite ease-in-out;
+}
+
+@keyframes sparklePulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   2. BREADCRUMB NAVIGATION
    -------------------------------------------------------------------------- */
 .item-breadcrumbs {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.88rem;
-  color: #64748b;
-  margin-bottom: 20px;
+  color: #e2d9f3;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
 }
 
 .item-breadcrumbs a {
-  color: var(--cardinal);
+  color: #ffb066;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .item-breadcrumbs a:hover {
+  color: #ffffff;
   text-decoration: underline;
 }
 
+.item-breadcrumbs span {
+  color: #c4b5fd;
+}
+
 /* --------------------------------------------------------------------------
-   2. PHOTO GALLERY COMPONENT (Left Column)
+   3. TWO-COLUMN PRODUCT DETAIL LAYOUT (CSS Grid & Responsive)
+   -------------------------------------------------------------------------- */
+.item-detail-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 36px;
+}
+
+/* Responsive breakpoint: stack columns on mobile screens */
+@media (max-width: 860px) {
+  .item-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. PHOTO GALLERY COMPONENT (Left Column)
    -------------------------------------------------------------------------- */
 .gallery-card {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e2e8f0;
+  background: #23143f;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(10, 5, 20, 0.45);
+  border: 2px solid rgba(255, 140, 36, 0.35);
+  transition: border-color 0.3s ease;
+}
+
+.gallery-card:hover {
+  border-color: rgba(255, 140, 36, 0.7);
 }
 
 .main-image-figure {
@@ -58,61 +115,58 @@
 .main-image-frame {
   width: 100%;
   height: 380px;
-  background-color: #f8fafc;
-  border-radius: 10px;
+  background-color: #1a0f30;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
-  border: 1px solid #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: zoom-in;
 }
 
 .main-image-frame img {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 92%;
+  max-height: 92%;
   object-fit: contain;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.3s ease;
 }
 
 .main-image-frame:hover img {
-  transform: scale(1.02);
+  transform: scale(1.04);
 }
 
 .main-image-caption {
-  margin-top: 8px;
-  font-size: 0.8rem;
-  color: #64748b;
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: #cbd5e1;
   text-align: center;
   font-style: italic;
 }
 
-/* --------------------------------------------------------------------------
-   3. THUMBNAIL SELECTOR ROW (Midterm Requirement)
-   Style thumbnails: size, border, :hover highlight, and active state
-   -------------------------------------------------------------------------- */
+/* Thumbnail selector row */
 .thumbnails-row {
   display: flex;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 16px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-/* Size: 76px x 76px; Border: 2px solid light slate */
+/* Thumbnail button box model */
 .thumb-btn {
-  width: 76px;
-  height: 76px;
-  border-radius: 8px;
-  border: 2px solid #e2e8f0;
-  background: #f8fafc;
+  width: 78px;
+  height: 78px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: #1a0f30;
   cursor: pointer;
   padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
   outline: none;
 }
 
@@ -120,33 +174,66 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* :hover highlight: cardinal red border, lift up 3px, and drop shadow */
+/* Hover lift and glow */
 .thumb-btn:hover {
-  border-color: var(--cardinal);
+  border-color: #ff8c24;
   transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(200, 16, 46, 0.2);
+  box-shadow: 0 6px 14px rgba(255, 140, 36, 0.35);
 }
 
-/* Active selected thumbnail highlight */
+/* Active selected thumbnail */
 .thumb-btn.active {
-  border-color: var(--cardinal);
-  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.25);
-  background: #ffffff;
+  border-color: #ff8c24;
+  box-shadow: 0 0 0 3px rgba(255, 140, 36, 0.5);
+  background: #2f1b4e;
 }
 
 /* --------------------------------------------------------------------------
-   4. DETAILS PANEL & SPECIFICATIONS LIST (Right Column)
-   Midterm Requirement: Style the details panel & details list (<dl>)
+   5. CAMPUS SAFETY & MEETUP BOX
+   -------------------------------------------------------------------------- */
+.safety-box {
+  background: #1f1435;
+  border: 1px solid #7d35a5;
+  border-left: 5px solid #ff8c24;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.safety-box h4 {
+  margin: 0 0 6px 0;
+  font-size: 0.98rem;
+  color: #ffb066;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.safety-box p {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.safety-box strong {
+  color: #ffd166;
+}
+
+/* --------------------------------------------------------------------------
+   6. DETAILS CARD & SPECIFICATIONS LIST (Right Column)
    -------------------------------------------------------------------------- */
 .details-card {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e2e8f0;
+  background-color: #fffaf2;
+  color: #241337;
+  border: 2px solid #ff8c24;
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -161,31 +248,32 @@
 }
 
 .category-tag {
-  background: #f1f5f9;
-  color: #334155;
+  background: #2e164d;
+  color: #ffb066;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 6px;
 }
 
 .condition-badge {
-  background: #ecfdf5;
-  color: #065f46;
+  background: #fef3c7;
+  color: #92400e;
   font-size: 0.82rem;
-  font-weight: 600;
-  padding: 4px 10px;
+  font-weight: 700;
+  padding: 4px 12px;
   border-radius: 6px;
-  border: 1px solid #a7f3d0;
+  border: 1px solid #fde68a;
 }
 
 .item-main-title {
-  font-size: 1.6rem;
-  color: var(--dark);
+  font-size: 1.65rem;
+  color: #1b1035;
   margin: 0;
   line-height: 1.3;
+  font-weight: 800;
 }
 
 .price-container {
@@ -196,37 +284,35 @@
 
 .detail-price {
   font-size: 2rem;
-  font-weight: 800;
-  color: var(--cardinal);
+  font-weight: 900;
+  color: #c8102e; /* UIW Cardinal brand */
 }
 
 .original-price-note {
-  font-size: 0.9rem;
-  color: #64748b;
+  font-size: 0.95rem;
+  color: #887a99;
   text-decoration: line-through;
 }
 
 .item-full-description {
-  font-size: 0.95rem;
-  color: #334155;
-  line-height: 1.6;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: #3b2852;
   margin: 0;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #f1f5f9;
 }
 
-/* Item Specifications Panel (<dl> list) */
+/* Specifications list (<dl>) */
 .item-specs-panel {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 14px 16px;
+  background: #f7effe;
+  border-radius: 10px;
+  padding: 14px 18px;
+  border: 1px solid #e9d5ff;
 }
 
 .specs-heading {
   margin: 0 0 10px 0;
   font-size: 0.95rem;
-  color: #1e293b;
+  color: #6b21a8;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -234,77 +320,144 @@
 
 .specs-list {
   margin: 0;
-  padding: 0;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+@media (max-width: 500px) {
+  .specs-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .spec-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 0.88rem;
-  padding: 4px 0;
-  border-bottom: 1px dashed #e2e8f0;
-}
-
-.spec-row:last-child {
-  border-bottom: none;
+  gap: 8px;
+  font-size: 0.86rem;
 }
 
 .spec-row dt {
-  color: #64748b;
-  font-weight: 600;
+  font-weight: 700;
+  color: #581c87;
+  min-width: 75px;
 }
 
 .spec-row dd {
   margin: 0;
-  color: #0f172a;
+  color: #241337;
   font-weight: 500;
-  text-align: right;
 }
 
-/* Quick Make an Offer tool (Stretch Goal) */
+/* --------------------------------------------------------------------------
+   7. HALLOWEEN QUICK-OFFER CALCULATOR
+   -------------------------------------------------------------------------- */
 .offer-box {
-  background: #fdf2f4;
-  border-radius: 8px;
-  padding: 12px 14px;
-  border: 1px solid #fecdd3;
+  background: #fff0db;
+  border: 2px dashed #ff8c24;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.offer-box span {
-  font-size: 0.85rem;
+.offer-box > span {
   font-weight: 700;
-  color: var(--cardinal-dark);
+  font-size: 0.92rem;
+  color: #9a3412;
 }
 
 .offer-chips {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
   flex-wrap: wrap;
 }
 
 .offer-btn {
-  background: #ffffff;
-  border: 1px solid #fca5a5;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.82rem;
+  background-color: #ff8c24;
+  color: #241337;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: 600;
-  color: var(--cardinal);
   transition: all 0.2s ease;
 }
 
 .offer-btn:hover {
-  background: var(--cardinal);
+  background-color: #7d35a5;
   color: #ffffff;
-  border-color: var(--cardinal);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(125, 53, 165, 0.35);
 }
 
-/* Primary Action Buttons */
+.custom-offer-row input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-offer-row input:focus {
+  border-color: #ff8c24 !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 140, 36, 0.25);
+}
+
+.custom-offer-row .btn {
+  background-color: #2e164d;
+  color: #ff8c24;
+  border: 1px solid #ff8c24;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-offer-row .btn:hover {
+  background-color: #ff8c24;
+  color: #241337;
+}
+
+/* --------------------------------------------------------------------------
+   8. SELLER PROFILE & ACTION BUTTONS
+   -------------------------------------------------------------------------- */
+.seller-profile-card {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.seller-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #c8102e; /* UIW Cardinal Red */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.seller-meta h4 {
+  margin: 0 0 2px 0;
+  font-size: 0.98rem;
+  color: #1b1035;
+}
+
+.seller-meta p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
 .action-buttons-row {
   display: flex;
   gap: 12px;
@@ -313,8 +466,8 @@
 
 .btn-message-seller {
   flex: 2;
-  min-width: 180px;
-  background: var(--cardinal);
+  min-width: 170px;
+  background: #c8102e;
   color: #ffffff;
   border: none;
   padding: 14px 20px;
@@ -322,19 +475,18 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-message-seller:hover {
   background: #9d0d24;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.25);
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
 }
 
-/* Save item button (Toggles between "Save item" and "Saved" with color change) */
 .btn-save-item {
   flex: 1;
-  min-width: 140px;
+  min-width: 130px;
   background: #f1f5f9;
   color: #334155;
   border: 1px solid #cbd5e1;
@@ -347,93 +499,28 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
 }
 
 .btn-save-item:hover {
   background: #e2e8f0;
 }
 
-/* Saved state: changes text and toggles to deep red/pink accent */
 .btn-save-item.saved {
   background: #ffe4e6;
   border-color: #fda4af;
-  color: var(--cardinal);
+  color: #c8102e;
   font-weight: 700;
 }
 
 /* --------------------------------------------------------------------------
-   5. SELLER PROFILE CARD & CAMPUS SAFETY
-   -------------------------------------------------------------------------- */
-.seller-profile-card {
-  background: #fafafa;
-  border-radius: 8px;
-  padding: 14px 16px;
-  border: 1px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.seller-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--cardinal);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.seller-meta h4 {
-  margin: 0 0 4px 0;
-  font-size: 0.98rem;
-  color: var(--dark);
-}
-
-.seller-meta p {
-  margin: 0;
-  font-size: 0.82rem;
-  color: #64748b;
-}
-
-/* Campus safety notice banner */
-.safety-box {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-left: 4px solid #16a34a;
-  border-radius: 8px;
-  padding: 14px 16px;
-}
-
-.safety-box h4 {
-  margin: 0 0 6px 0;
-  font-size: 0.92rem;
-  color: #166534;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.safety-box p {
-  margin: 0;
-  font-size: 0.84rem;
-  color: #15803d;
-  line-height: 1.4;
-}
-
-/* --------------------------------------------------------------------------
-   6. INTERACTIVE MESSAGE MODAL
+   9. INTERACTIVE MESSAGE MODAL
    -------------------------------------------------------------------------- */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 8, 30, 0.75);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -453,11 +540,12 @@
   background: #ffffff;
   width: 100%;
   max-width: 480px;
-  border-radius: 12px;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   transform: translateY(20px);
   transition: transform 0.25s ease;
+  border: 2px solid #ff8c24;
 }
 
 .modal-overlay.active .modal-window {
@@ -465,12 +553,13 @@
 }
 
 .modal-header {
-  background: var(--cardinal);
-  color: #ffffff;
+  background: #1b1035;
+  color: #ff8c24;
   padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 2px solid #ff8c24;
 }
 
 .modal-header h3 {
@@ -492,6 +581,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  color: #1e293b;
 }
 
 .modal-body textarea {
@@ -508,7 +598,8 @@
 }
 
 .modal-body textarea:focus {
-  border-color: var(--cardinal);
+  border-color: #ff8c24;
+  box-shadow: 0 0 0 3px rgba(255, 140, 36, 0.2);
 }
 
 .char-counter {
@@ -535,7 +626,7 @@
 }
 
 .btn-modal-send {
-  background: var(--cardinal);
+  background: #c8102e;
   color: #ffffff;
   border: none;
   padding: 8px 18px;
@@ -550,7 +641,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. IMAGE ZOOM MODAL (Stretch Goal)
+   10. IMAGE ZOOM MODAL & RECOMMENDATIONS
    -------------------------------------------------------------------------- */
 .zoom-modal-window {
   position: relative;
@@ -566,9 +657,10 @@
   max-height: 85vh;
   object-fit: contain;
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  padding: 14px;
+  border: 3px solid #ff8c24;
 }
 
 .btn-close-zoom {
@@ -578,10 +670,11 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--cardinal);
-  color: #ffffff;
+  background: #ff8c24;
+  color: #1b1035;
   border: 2px solid #ffffff;
   font-size: 1.3rem;
+  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -589,23 +682,21 @@
   line-height: 1;
 }
 
-/* --------------------------------------------------------------------------
-   8. SIMILAR ITEMS RECOMMENDATIONS
-   -------------------------------------------------------------------------- */
+/* Recommendations Section */
 .recommendations-section {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .recommendations-section h3 {
-  color: var(--dark);
-  font-size: 1.25rem;
-  margin-bottom: 16px;
+  color: #ffb066;
+  font-size: 1.3rem;
+  margin-bottom: 18px;
   padding-bottom: 8px;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid rgba(255, 140, 36, 0.4);
 }
 
 .recommendations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
