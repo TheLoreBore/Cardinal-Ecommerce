@@ -205,7 +205,7 @@ function renderListings(itemsToRender) {
     var emptyBox = document.createElement("div");
     emptyBox.className = "no-results-box card";
     emptyBox.innerHTML =
-      "<h3>No Listings Found</h3>" +
+      "<h3>No items found</h3>" +
       "<p>We couldn't find any items matching your current search or category filter.</p>" +
       "<button class=\"btn-reset-filters\" onclick=\"resetAllFilters()\">Reset All Filters</button>";
     gridContainer.appendChild(emptyBox);
